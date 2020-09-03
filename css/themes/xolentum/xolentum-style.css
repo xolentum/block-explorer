@@ -1,0 +1,66 @@
+@import url("xolentum-bootstrap.css");
+
+#coinName
+{
+            text-transform: capitalize;
+        }
+        body {
+            padding-top: 65px;
+            overflow-y: scroll;
+        }
+
+        #loading{
+            font-size: 2em;
+        }
+        #stats_updated{
+            opacity: 0;
+            height: 40px;
+            line-height: 40px;
+            color: #e8e8e8;
+            font-size: 0.9em;
+            position: absolute; 
+            right: 10px;
+            top: 0;
+        }
+
+        footer{
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            background: #ffffff;
+            padding: 60px;
+            margin-top: 60px;
+        }
+		
+        .xolentum-api-links {		
+           padding: 30px;
+           background: #fff;
+           border-radius: 4px;
+        }
+		
+		.scrollup{
+			opacity: 1 !important;
+			position:fixed;
+			bottom:50px;
+			right:100px;
+			display:none;			
+			text-align: center;
+			line-height: 50px;
+			font-size: 50px;
+			-webkit-transition: color 200ms ease-in-out;
+			-moz-transition:    color 200ms ease-in-out;
+			-o-transition:      color 200ms ease-in-out;
+			-ms-transition: 	color 200ms ease-out;
+			display: none;
+			overflow: hidden;
+			color: linear-gradient( 122deg, #5b84aa 0%, #56a4bd 100%);
+		}
+    
+    .input-group {
+      margin-top: 5px;
+      margin-bottom: 5px;
+		}
+		
+		#block.hash, #transaction.hash {
+			word-break: break-all;
+		}
