@@ -3847,10 +3847,10 @@ textarea.input-group-sm>.form-control,textarea.input-group-sm>.input-group-addon
  }
 }
 .navbar-default {
-    background-image: -moz-linear-gradient( 90deg, rgba(50, 46, 64, 1) 0%, rgba(139, 134, 163, 1) 100%);
-    background-image: -webkit-linear-gradient( 90deg, rgba(50, 46, 64, 1) 0%, rgba(139, 134, 163, 1) 100%);
-    background-image: -ms-linear-gradient( 90deg, rgba(50, 46, 64, 1) 0%, rgba(139, 134, 163, 1) 100%);
-    background-image: linear-gradient( 90deg, rgba(50, 46, 64, 1) 0%, rgba(139, 134, 163, 1) 100%);
+    background-image: -moz-linear-gradient( 90deg, rgb(75 172 210) 0%, rgb(9 82 134) 100%);
+    background-image: -webkit-linear-gradient( 90deg, rgb(75 172 210) 0%, rgb(9 82 134) 100%);
+    background-image: -ms-linear-gradient( 90deg, rgb(75 172 210) 0%, rgb(9 82 134) 100%);
+    background-image: linear-gradient( 90deg, rgb(75 172 210) 0%, rgb(9 82 134) 100%);
  border-color:#2b2e32;
 }
 .navbar-default .navbar-brand {
