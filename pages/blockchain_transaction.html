@@ -13,8 +13,8 @@
     </div>
 </div>
 <div id="tx_block">
-	<h3><i class="fa fa-cube fa-fw" aria-hidden="true"></i> In block</h3>
-	<div class="row">
+    <h3><i class="fa fa-cube fa-fw" aria-hidden="true"></i> In block</h3>
+    <div class="row">
 		<div class="col-md-12 stats">
 			<div><i class="fa fa-circle-o"></i> Hash: <span id="block.hash" style="word-break: break-all;"></span></div>
 			<div><i class="fa fa-circle-o"></i> Height: <span id="block.height"></span></div>
@@ -134,7 +134,7 @@
         var outputTotal = 0;
         for (var i = 0; i < transaction.json.vout.length; i++)
             outputTotal += transaction.json.vout[i].amount;
-        
+
         updateText('transaction.amount_out', getReadableCoins(outputTotal, 4));
         updateText('transaction.type', getTransactionType(transaction.json.rct_signatures.type));
         updateText('transaction.extra', txExtra);
@@ -145,7 +145,7 @@
             updateText('transaction.mixin', transaction.json.vin[0].key.key_offsets.length - 1);
 
         updateText('transaction.hash', transaction.tx_hash);
-				
+
         renderInputs(transaction.json.vin);
         renderOutputs(transaction.json.vout);
 	}
@@ -185,14 +185,14 @@
         var $inputsRows = $('#inputs_rows');
 
         for (var i = 0; i < inputResults.length; i++){
-		
+
             var input = inputResults[i];
 
             if (!input.key)
                 continue;
-	
+
             var inputJson = JSON.stringify(input);
-			
+
             var existingRow = document.getElementById('inputRow' + input.key.k_image);
 
             if (existingRow && existingRow.getAttribute('data-json') !== inputJson){
@@ -203,9 +203,9 @@
                 var inputElement = getInputRowElement(input, inputJson);
                 $inputsRows.append(inputElement);
             }
-			
+
         }
-		
+
 		updateText('inputs_count', document.querySelectorAll('#inputs_rows tr').length);
     }
 
@@ -237,7 +237,7 @@
             var output = outputResults[i];
 
             var outputJson = JSON.stringify(output);
-			
+
             var existingRow = document.getElementById('outputRow' + output.target.key);
 
             if (existingRow && existingRow.getAttribute('data-json') !== outputJson){
@@ -249,10 +249,10 @@
                 $outputsRows.append(outputElement);
             }
         }
-		
+
 		updateText('outputs_count', document.querySelectorAll('#outputs_rows tr').length);
     }
-	
+
 	$(function() {
 		$('[data-toggle="tooltip"]').tooltip();
     });
