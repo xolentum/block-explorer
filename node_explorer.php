@@ -62,6 +62,4 @@ function get_nodes_table(){
 	return $html;
 }
 
-echo get_nodes_table();
-
 ?>
