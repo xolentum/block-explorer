@@ -55,7 +55,7 @@ function get_time_diff($original){
 	$timestamp=$original;
 	$conv = new DateTime(date("Y-m-d H:i:s", $timestamp));
 	$interval = date_diff($now,$conv);
-	return $interval->format('%a:%h:%i:%s');
+	return $interval->format('%aD %hH %iM %sS');
 }
 
 function get_nodes_table(){
@@ -76,6 +76,6 @@ function get_nodes_table(){
 }
 
 // unhash line if you want to print table
-// echo @get_nodes_table();
+echo @get_nodes_table();
 
 ?>
