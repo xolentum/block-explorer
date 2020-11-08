@@ -76,6 +76,6 @@ function get_nodes_table(){
 }
 
 // unhash line if you want to print table
-echo @get_nodes_table();
+// echo @get_nodes_table();
 
 ?>
