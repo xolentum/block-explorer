@@ -40,9 +40,22 @@ function do_table($url,$name,$req_params){
 		"HOSTNAME:PORT"=>$req_params["url"].":".$req_params["port"],
 		"VERSION"=>"1.0.0",
 		"HEIGHT"=>$arr["height"],
-		"IN/OUT (TX)"=>$arr["incoming_connections_count"]."/".$arr["outgoing_connections_count"]." ({$arr["tx_pool_size"]})"
+		"IN/OUT (TX)"=>$arr["incoming_connections_count"]."/".$arr["outgoing_connections_count"]." ({$arr["tx_pool_size"]})",
+		"UPTIME"=>get_time_diff($req_params["start_time"])
 	);
 	return $member;
+}
+
+function get_time_diff($original){
+	date_default_timezone_set("UTC");
+	$page = $_SERVER['PHP_SELF'];
+	$sec = "120";
+	header("Refresh: $sec; url=$page");
+	$now = new DateTime();
+	$timestamp=$original;
+	$conv = new DateTime(date("Y-m-d H:i:s", $timestamp));
+	$interval = date_diff($now,$conv);
+	return $interval->format('%a:%h:%i:%s');
 }
 
 function get_nodes_table(){
@@ -61,5 +74,8 @@ function get_nodes_table(){
 	$html = build_table($final_arr);
 	return $html;
 }
+
+// unhash line if you want to print table
+// echo @get_nodes_table();
 
 ?>
