@@ -1,5 +1,5 @@
 <head>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://kit.fontawesome.com/72d92586f6.js" crossorigin="anonymous"></script>
 </head>
 
 <?php
@@ -8,14 +8,14 @@ function build_table($array){
 	$html = '<table>';
 	$html .= '<tr>';
 	foreach($array[0] as $key=>$value){
-			$html .= '<th>' . htmlspecialchars($key) . '</th>';
+			$html .= '<th>' . $key . '</th>';
 		}
 	$html .= '</tr>';
 
 	foreach( $array as $key=>$value){
 		$html .= '<tr>';
 		foreach($value as $key2=>$value2){
-			$html .= '<td>' . htmlspecialchars($value2) . '</td>';
+			$html .= '<td>' . $value2 . '</td>';
 		}
 		$html .= '</tr>';
 	}
@@ -24,24 +24,45 @@ function build_table($array){
 	return $html;
 }
 
-function do_table($url,$name,$req_params){
-	$ctx = stream_context_create(array('http'=>
-		array(
-			'timeout' => 2,
-		)
-	));
-	$check_url = @file_get_contents($url."/get_info",true,$ctx);
-	if($check_url === false){
-		return null;
+function get_history_badge($badge_list){
+	$final_badge_list = array();
+	$up_badge = "<i style=\"color:green\" class=\"fas fa-circle\"></i>";
+	$down_badge = "<i style=\"color:red\" class=\"fas fa-circle\"></i>";
+	foreach ($badge_list as $badge_value){
+		if($badge_value){
+			array_push($final_badge_list,$up_badge);
+		}
+		else{
+			array_push($final_badge_list,$down_badge);
+		}
 	}
-	$arr = json_decode($check_url,true);
+	return join("",$final_badge_list);
+}
+
+function get_version($original_version){
+	$regex_str = explode("-",$original_version)[0];
+	return $regex_str ? $regex_str : false;
+}
+
+function do_table($url,$name,$req_params){
+	// $ctx = stream_context_create(array('http'=>
+	// 	array(
+	// 		'timeout' => 2,
+	// 	)
+	// ));
+	// $check_url = @file_get_contents($url."/get_info",true,$ctx);
+	// if($check_url === false){
+	// 	return null;
+	// }
+	// $arr = json_decode($check_url,true);
+	$version = get_version($req_params["version"]) or $version = "1.0.0";
+
 	$member = array(
 		"NODE_NAME"=>$name,
 		"HOSTNAME:PORT"=>$req_params["host"].":".$req_params["port"],
-		"VERSION"=>"1.0.0",
-		"HEIGHT"=>$arr["height"],
-		"IN/OUT (TX)"=>$arr["incoming_connections_count"]."/".$arr["outgoing_connections_count"]." ({$arr["tx_pool_size"]})",
-		"UPTIME"=>get_time_diff($arr["start_time"])
+		"VERSION"=>$version,
+		"HEIGHT"=>$req_params["height"],
+		"HISTORY"=>get_history_badge($req_params["history"])
 	);
 	return $member;
 }
