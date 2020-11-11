@@ -3,6 +3,7 @@
 </head>
 
 <?php
+header("Refresh: 120; url={$_SERVER['PHP_SELF']}");
 
 function build_table($array){
 	$html = '<table>';
@@ -47,7 +48,7 @@ function get_version($original_version){
 function do_table($url,$name,$req_params){
 	$ctx = stream_context_create(array('http'=>
 		array(
-			'timeout' => 2,
+			'timeout' => 3,
 		)
 	));
 	$check_url = @file_get_contents($url."/get_info",true,$ctx);
@@ -58,7 +59,7 @@ function do_table($url,$name,$req_params){
 	$version = get_version($req_params["version"]) or $version = "1.0.0";
 
 	$member = array(
-		"NODE_NAME"=>$name,
+		"NODE NAME"=>$name,
 		"HOSTNAME:PORT"=>$req_params["host"].":".$req_params["port"],
 		"VERSION"=>$version,
 		"HEIGHT"=>$req_params["height"],
@@ -98,6 +99,6 @@ function get_nodes_table($url){
 }
 
 // unhash line if you want to print table
-// echo get_nodes_table("http://sohamb03.ml:1234/nodes");
+echo @get_nodes_table("http://sohamb03.ml:1234/nodes");
 
 ?>
