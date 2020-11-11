@@ -45,16 +45,16 @@ function get_version($original_version){
 }
 
 function do_table($url,$name,$req_params){
-	// $ctx = stream_context_create(array('http'=>
-	// 	array(
-	// 		'timeout' => 2,
-	// 	)
-	// ));
-	// $check_url = @file_get_contents($url."/get_info",true,$ctx);
-	// if($check_url === false){
-	// 	return null;
-	// }
-	// $arr = json_decode($check_url,true);
+	$ctx = stream_context_create(array('http'=>
+		array(
+			'timeout' => 2,
+		)
+	));
+	$check_url = @file_get_contents($url."/get_info",true,$ctx);
+	if($check_url === false){
+		return null;
+	}
+	$arr = json_decode($check_url,true);
 	$version = get_version($req_params["version"]) or $version = "1.0.0";
 
 	$member = array(
@@ -62,6 +62,7 @@ function do_table($url,$name,$req_params){
 		"HOSTNAME:PORT"=>$req_params["host"].":".$req_params["port"],
 		"VERSION"=>$version,
 		"HEIGHT"=>$req_params["height"],
+		"IN/OUT"=>$arr["incoming_connections_count"]."/".$arr["outgoing_connections_count"],
 		"HISTORY"=>get_history_badge($req_params["history"])
 	);
 	return $member;
