@@ -71,6 +71,6 @@ function get_pools_table($url){
 	return $html;
 }
 
-echo get_pools_table("http://sohamb03.ml:1234/pools");
+echo get_pools_table("http://xol-api.sohamb03.me/pools");
 
 ?>

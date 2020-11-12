@@ -99,6 +99,6 @@ function get_nodes_table($url){
 }
 
 // unhash line if you want to print table
-echo @get_nodes_table("http://sohamb03.ml:1234/nodes");
+echo @get_nodes_table("http://xol-api.sohamb03.me/nodes");
 
 ?>
