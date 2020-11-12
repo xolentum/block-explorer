@@ -69,18 +69,6 @@ function do_table($url,$name,$req_params){
 	return $member;
 }
 
-function get_time_diff($original){
-	date_default_timezone_set("UTC");
-	$page = $_SERVER['PHP_SELF'];
-	$sec = "120";
-	header("Refresh: $sec; url=$page");
-	$now = new DateTime();
-	$timestamp=$original;
-	$conv = new DateTime(date("Y-m-d H:i:s", $timestamp));
-	$interval = date_diff($now,$conv);
-	return $interval->format('%aD %hH %iM %sS');
-}
-
 function get_nodes_table($url){
 	$base_arr = json_decode(file_get_contents($url,true),true);
 	$final_arr = array();

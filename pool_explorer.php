@@ -43,12 +43,21 @@ function get_history_badge($badge_list){
 	return join("",$final_badge_list);
 }
 
-function do_table($req_params){
+function get_readable_hashrate_string($hashrate){
+	$i = 0;
+	$byteUnits = [' H', ' kH', ' MH', ' GH', ' TH', ' PH', ' EH', ' ZH', ' YH' ];
+	while ($hashrate > 1000){
+		$hashrate /= 1000;
+		$i++;
+	}
+	return number_format((float)$hashrate,2,'.','').$byteUnits[$i];
+}
 
+function do_table($req_params){
 	$member = array(
 		"POOL NAME"=>$req_params["name"],
 		"HEIGHT"=>$req_params["height"],
-		"HASH RATE"=>$req_params["hashrate"],
+		"HASH RATE"=>get_readable_hashrate_string($req_params["hashrate"]),
 		"MINERS"=>$req_params["miners"],
 		"POOL_FEE"=>$req_params["fee"],
 		"MIN_PAYOUT"=>$req_params["min_payout"],
