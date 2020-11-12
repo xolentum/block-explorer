@@ -4,6 +4,8 @@
 
 <?php
 
+header("Refresh: 120; url={$_SERVER['PHP_SELF']}");
+
 function build_table($array){
 	$html = '<table>';
 	$html .= '<tr>';
@@ -50,7 +52,7 @@ function get_readable_hashrate_string($hashrate){
 		$hashrate /= 1000;
 		$i++;
 	}
-	return number_format((float)$hashrate,2,'.','').$byteUnits[$i];
+	return number_format((float)$hashrate,2,'.','').$byteUnits[$i].'/s';
 }
 
 function do_table($req_params){
@@ -64,20 +66,25 @@ function do_table($req_params){
 		"LAST BLOCK FOUND"=>get_formatted_date($req_params["last_block_timestamp"]),
 		"HISTORY"=>get_history_badge($req_params["history"])
 	);
-	return $member;
+
+	return array($member,$req_params["hashrate"]);
 }
 
 function get_pools_table($url){
+	$total_hash = 0;
 	$base_arr = json_decode(file_get_contents($url,true),true);
 	$final_arr = array();
 	foreach($base_arr as $req_params){
-		$pushup = do_table($req_params);
+		list($pushup,$hash) = do_table($req_params);
+		$total_hash+=$hash;
 		if($pushup!==null){
 			array_push($final_arr,$pushup);
 		}
 	}
+	$final_hash = get_readable_hashrate_string($total_hash);
 	$html = build_table($final_arr);
-	return $html;
+	$hash_html = "<div>Pools Network Hashrate: {$final_hash}</div>";
+	return $hash_html.$html;
 }
 
 echo get_pools_table("https://xol-api.sohamb03.me/pools");
