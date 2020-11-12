@@ -49,7 +49,7 @@ function do_table($req_params){
 		"POOL NAME"=>$req_params["name"],
 		"HEIGHT"=>$req_params["height"],
 		"HASH RATE"=>$req_params["hashrate"],
-		"MINER"=>$req_params["height"],
+		"MINERS"=>$req_params["miners"],
 		"POOL_FEE"=>$req_params["fee"],
 		"MIN_PAYOUT"=>$req_params["min_payout"],
 		"LAST BLOCK FOUND"=>get_formatted_date($req_params["last_block_timestamp"]),
