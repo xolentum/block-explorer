@@ -80,6 +80,6 @@ function get_pools_table($url){
 	return $html;
 }
 
-echo get_pools_table("http://xol-api.sohamb03.me/pools");
+echo get_pools_table("https://xol-api.sohamb03.me/pools");
 
 ?>
