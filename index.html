@@ -3,527 +3,177 @@
 <head lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
-    <link rel="shortcut icon" href="./favicon.ico">
-    <link rel="icon" type="image/icon" href="./favicon.ico" >
-    <title>Xolentum Block Explorer</title>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.6.3/jquery.timeago.min.js"></script>
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
-    <link href="./css/themes/xolentum/xolentum-style.css" rel="stylesheet" id="theme_xolentum">
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="//fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet" type="text/css">
-    <script src="./js/Chart.bundle.min.js"></script>
-    <script src="./js/sorttable.js"></script>
-	<script src="./js/config.js"></script>
-	<script src="./js/paperwallet/languages.js"></script>
-	<script src="./js/paperwallet/paperwallet.js"></script>
-	<script src="./js/nacl-fast-cn.js"></script>
-	<script src="./js/cn_helper.js"></script>
+    <title>Xolentum [XOL] Block Explorer</title>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.4.0/jquery.timeago.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-sparklines/2.1.2/jquery.sparkline.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script type="text/javascript" src="config.js"></script>
+    <script type="text/javascript" src="js/cookie.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Inconsolata">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="css/styles.css" type="text/css">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="icon" type="image/icon" href="favicon.ico">
 </head>
 <body>
-<script>
+<header id="header" class="page-topbar">
+    <div class="navbar-fixed">
+        <nav class="navbar-color light-blue darken-4">
+            <div class="container">
+                <div class="nav-wrapper">
+                    <ul class="left">
+                        <li>
+                            <a class="brand-logo" href="./">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="45pt" height="45pt" viewBox="0 0 45 45" version="1.1">
+<g id="surface1">
+<path style="fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:4;" d="M 335.833333 294.055556 L 330.888889 320 C 332.555556 317.722222 333.555556 316.333333 334 315.777778 C 334 315.777778 388.722222 240.722222 388.722222 240.722222 C 389.611111 239.5 391.777778 236.5 395.277778 231.666667 L 412.166667 224.833333 L 445.722222 211.333333 L 465.555556 217.833333 L 453.666667 207.944444 C 467.055556 202.944444 481.055556 199.611111 495.222222 198 L 509.111111 181.166667 L 538.833333 188.111111 L 556.611111 172.277778 L 390.277778 174.277778 L 315.388889 261.055556 Z M 335.833333 294.055556 " transform="matrix(0.0703125,0,0,0.0703125,0,0)"/>
+<path style="fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:4;" d="M 213.055556 320 C 216.833333 318.333333 219.166667 317.277778 220.111111 316.833333 C 242.166667 307 267.333333 306.5 289.777778 315.444444 C 290.388889 315.666667 291.888889 316.277778 294.277778 317.222222 L 295.666667 316 C 303.555556 311.222222 310.111111 307.666667 315.277778 305.277778 C 320.833333 302.833333 328.611111 297.888889 334.555556 296.555556 C 334.722222 296.5 335.166667 296.388889 335.833333 296.222222 L 294.277778 167.5 L 134.833333 170.5 Z M 213.055556 320 " transform="matrix(0.0703125,0,0,0.0703125,0,0)"/>
+<path style="fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:4;" d="M 506.444444 182.666667 C 503.5 187.5 501.611111 190.5 500.833333 191.666667 C 498.888889 194.833333 499.444444 198.944444 502.111111 201.555556 C 502.722222 202.055556 504.166667 203.444444 506.444444 205.611111 L 492.777778 197.111111 Z M 506.444444 182.666667 " transform="matrix(0.0703125,0,0,0.0703125,0,0)"/>
+<path style="fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:4;" d="M 101.555556 482.777778 L 59.555556 511.777778 C 63.055556 508.333333 65.277778 506.166667 66.166667 505.333333 C 99.833333 472.333333 142.888889 450.555556 189.444444 442.944444 C 192.777778 442.388889 201.166667 441 214.555556 438.777778 L 261.555556 386.777778 L 283.666667 365.666667 L 309.555556 351.777778 L 293.555556 369.777778 L 399.555556 357.777778 L 411.555556 362.777778 L 470.555556 485.388889 C 389.166667 485.388889 338.333333 485.388889 318 485.388889 C 310.055556 485.388889 303 480.111111 300.777778 472.444444 C 297.666667 461.833333 289.944444 435.277778 277.555556 392.777778 C 237.611111 437.888889 212.666667 466.055556 202.666667 477.333333 C 198.166667 482.444444 191.611111 485.277778 184.777778 485.111111 C 173.666667 484.777778 145.944444 484.055556 101.555556 482.777778 Z M 101.555556 482.777778 " transform="matrix(0.0703125,0,0,0.0703125,0,0)"/>
+<path style="fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:4;" d="M 194 351.777778 C 191.166667 360.611111 189.388889 366.166667 188.666667 368.333333 C 183.222222 385.111111 179.5 402.388889 177.5 419.888889 L 162 424.388889 Z M 194 351.777778 " transform="matrix(0.0703125,0,0,0.0703125,0,0)"/>
+<path style="fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:4;" d="M 536.166667 320.166667 L 521.277778 327.888889 L 502.777778 340.388889 L 464.777778 320 L 409.777778 366 L 389.277778 361.388889 C 421.777778 337.444444 442.111111 322.5 450.222222 316.5 C 453.333333 314.222222 454.055556 309.888889 451.888889 306.722222 C 450.777778 305.111111 448.111111 301.166667 443.777778 294.888889 L 468.111111 307.666667 L 502.777778 327.888889 C 507.666667 325.555556 510.722222 324.111111 511.944444 323.5 C 520.666667 319.333333 530.111111 316.611111 539.777778 315.611111 C 540.666667 315.5 542.833333 315.277778 546.277778 314.888889 Z M 536.166667 320.166667 " transform="matrix(0.0703125,0,0,0.0703125,0,0)"/>
+<path style="fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:4;" d="M 529.833333 304.277778 L 575.777778 294.888889 L 624.777778 288.388889 C 609 288.944444 599.111111 289.333333 595.166667 289.444444 C 567.333333 290.444444 539.611111 293.5 512.222222 298.611111 C 511.277778 298.777778 508.888889 299.222222 505.166667 299.888889 C 499.611111 284.666667 491.944444 270.222222 482.444444 257.055556 C 481.777778 256.111111 480.055556 253.722222 477.277778 249.888889 C 479.277778 254.777778 480.5 257.777778 481 259 C 488.111111 276.444444 491.777778 295.055556 491.777778 313.888889 Z M 529.833333 304.277778 " transform="matrix(0.0703125,0,0,0.0703125,0,0)"/>
+<path style="fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:4;" d="M 206.5 313.555556 C 206.5 313.555556 204.888889 314.333333 204.888889 314.333333 C 203.777778 315 201.055556 316.555556 196.666667 319 C 186.555556 326.388889 177.055556 334.555556 168.222222 343.5 L 154.444444 354.611111 C 153.388889 355.5 152.722222 356.055556 152.444444 356.277778 C 138.944444 367.388889 123.444444 375.833333 106.777778 381.222222 C 106.666667 381.277778 106.222222 381.388889 105.611111 381.611111 C 105.277778 381.722222 105.055556 381.777778 105 381.777778 C 90.833333 386 75.833333 386.555556 61.444444 383.333333 C 60.944444 383.222222 59.555556 382.888889 57.333333 382.388889 C 48.777778 381.055556 42 374.333333 40.555556 365.722222 C 40 362.722222 41 368.611111 40.555556 365.722222 C 38.833333 355.833333 39.944444 345.666667 43.722222 336.388889 C 43.833333 336.166667 44.055556 335.555556 44.444444 334.611111 C 40.222222 337.555556 36.944444 341.666667 35 346.444444 C 34.555556 347.611111 33.333333 350.5 31.5 355.166667 C 31.222222 358.888889 31 361.277778 30.944444 362.222222 C 30.611111 366.444444 30.944444 370.722222 31.833333 374.888889 C 32.222222 376.666667 31.555556 373.611111 31.833333 374.888889 C 33.111111 380.722222 36.5 385.833333 41.333333 389.333333 C 42.666667 390.277778 39.833333 388.222222 41.333333 389.333333 C 45.666667 392.444444 50.777778 394.444444 56.111111 395.111111 C 60.388889 395.666667 60.444444 395.666667 63.555556 396.055556 C 72.777778 397.166667 82.111111 397.055556 91.333333 395.666667 C 95.944444 394.944444 88.555556 396.055556 91.333333 395.666667 C 106.611111 393.333333 121.277778 388.055556 134.555556 380.111111 C 137.666667 378.222222 145.555556 373.555556 158.111111 366.055556 C 163.333333 362.555556 166.611111 360.333333 167.944444 359.444444 C 168.111111 359.333333 168.277778 359.222222 168.388889 359.055556 C 172.222222 354.611111 174.277778 352.222222 175.777778 350.444444 C 183.5 341.555556 192.555556 333.888889 202.666667 327.833333 C 204.055556 327.055556 207.444444 325 212.944444 321.722222 C 212.944444 316.888889 212.944444 313.888889 212.944444 312.666667 C 212.944444 311.722222 211.944444 311.055556 211.055556 311.444444 C 210 311.944444 207.777778 312.944444 206.5 313.555556 Z M 206.5 313.555556 " transform="matrix(0.0703125,0,0,0.0703125,0,0)"/>
+<path style="fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:4;" d="M 254.444444 281.388889 L 293.444444 316.388889 C 292.388889 316.166667 291.722222 316.055556 291.444444 315.944444 C 265.333333 310.333333 238.111111 312.222222 212.944444 321.388889 Z M 254.444444 281.388889 " transform="matrix(0.0703125,0,0,0.0703125,0,0)"/>
+<path style="fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:4;" d="M 406.777778 366 L 374.277778 362 C 389.722222 364.277778 405.333333 359.444444 416.833333 348.888889 C 421.777778 344.388889 434.055556 333.111111 453.777778 315 Z M 406.777778 366 " transform="matrix(0.0703125,0,0,0.0703125,0,0)"/>
+<path style="fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:4;" d="M 512.277778 178 C 525.833333 181.666667 536.111111 185.5 543 189.5 C 545.333333 190.833333 548.666667 193.222222 553 196.666667 L 553 206 L 558 207.5 L 563.5 208.777778 L 562.5 213.833333 L 560.888889 213.833333 L 556.611111 225 L 545.277778 229.5 L 555 224.277778 L 556.611111 211 L 548.777778 209.333333 L 545.277778 198.777778 L 536.611111 196.666667 L 521.111111 192.555556 L 499.611111 189.5 Z M 512.277778 178 " transform="matrix(0.0703125,0,0,0.0703125,0,0)"/>
+<path style="fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:4;" d="M 333.666667 335.888889 L 334.666667 336.666667 L 335.444444 337.666667 L 335.944444 338.833333 L 336.111111 340.166667 L 335.944444 341.5 L 335.444444 342.722222 L 334.666667 343.722222 L 333.666667 344.5 L 332.5 345 L 331.166667 345.166667 L 329.888889 345 L 328.666667 344.5 L 327.666667 343.722222 L 326.888889 342.722222 L 326.388889 341.5 L 326.222222 340.166667 L 326.388889 338.833333 L 326.888889 337.666667 L 327.666667 336.666667 L 328.666667 335.888889 L 329.888889 335.388889 L 331.166667 335.166667 L 332.5 335.388889 Z M 312.5 313.555556 L 313.5 314.333333 L 314.277778 315.333333 L 314.777778 316.555556 L 314.944444 317.888889 L 314.777778 319.222222 L 314.277778 320.388889 L 313.5 321.388889 L 312.5 322.166667 L 311.333333 322.666667 L 310.055556 322.833333 L 308.722222 322.666667 L 307.555556 322.166667 L 306.555556 321.388889 L 305.777778 320.388889 L 305.277778 319.222222 L 305.111111 317.888889 L 305.277778 316.555556 L 305.777778 315.333333 L 306.555556 314.333333 L 307.555556 313.555556 L 308.722222 313.055556 L 310.055556 312.888889 L 311.333333 313.055556 Z M 382.944444 312.222222 L 384 313.055556 L 384.777778 314.055556 L 385.277778 315.277778 L 385.444444 316.611111 L 385.277778 318 L 384.777778 319.222222 L 384 320.222222 L 382.944444 321.055556 L 381.777778 321.555556 L 380.388889 321.722222 L 379.055556 321.555556 L 377.833333 321.055556 L 376.833333 320.222222 L 376.055556 319.222222 L 375.555556 318 L 375.333333 316.611111 L 375.555556 315.277778 L 376.055556 314.055556 L 376.833333 313.055556 L 377.833333 312.222222 L 379.055556 311.722222 L 380.388889 311.555556 L 381.777778 311.722222 Z M 349.666667 312.222222 L 350.722222 313.055556 L 351.5 314.055556 L 352 315.277778 L 352.166667 316.611111 L 352 318 L 351.5 319.222222 L 350.722222 320.222222 L 349.666667 321.055556 L 348.5 321.555556 L 347.166667 321.722222 L 345.777778 321.555556 L 344.611111 321.055556 L 343.555556 320.222222 L 342.777778 319.222222 L 342.277778 318 L 342.111111 316.611111 L 342.277778 315.277778 L 342.777778 314.055556 L 343.555556 313.055556 L 344.611111 312.222222 L 345.777778 311.722222 L 347.166667 311.555556 L 348.5 311.722222 Z M 403.166667 293.555556 L 404.222222 294.388889 L 405 295.388889 L 405.5 296.611111 L 405.666667 298 L 405.5 299.333333 L 405 300.555556 L 404.222222 301.555556 L 403.166667 302.388889 L 401.944444 302.888889 L 400.611111 303.055556 L 399.277778 302.888889 L 398.055556 302.388889 L 397.055556 301.555556 L 396.277778 300.555556 L 395.777778 299.333333 L 395.555556 298 L 395.777778 296.611111 L 396.277778 295.388889 L 397.055556 294.388889 L 398.055556 293.555556 L 399.277778 293.055556 L 400.611111 292.888889 L 401.944444 293.055556 Z M 372.833333 288.5 L 373.888889 289.277778 L 374.666667 290.333333 L 375.166667 291.555556 L 375.333333 292.888889 L 375.166667 294.222222 L 374.666667 295.444444 L 373.888889 296.5 L 372.833333 297.277778 L 371.666667 297.777778 L 370.333333 298 L 368.944444 297.777778 L 367.777778 297.277778 L 366.722222 296.5 L 365.944444 295.444444 L 365.444444 294.222222 L 365.277778 292.888889 L 365.444444 291.555556 L 365.944444 290.333333 L 366.722222 289.277778 L 367.777778 288.5 L 368.944444 287.944444 L 370.333333 287.777778 L 371.666667 287.944444 Z M 448.555556 276.388889 L 449.555556 277.166667 L 450.333333 278.222222 L 450.833333 279.388889 L 451 280.722222 L 450.833333 282.055556 L 450.333333 283.277778 L 449.555556 284.277778 L 448.555556 285.111111 L 447.388889 285.611111 L 446.055556 285.777778 L 444.722222 285.611111 L 443.555556 285.111111 L 442.555556 284.277778 L 441.777778 283.277778 L 441.277778 282.055556 L 441.111111 280.722222 L 441.277778 279.388889 L 441.777778 278.222222 L 442.555556 277.166667 L 443.555556 276.388889 L 444.722222 275.888889 L 446.055556 275.722222 L 447.388889 275.888889 Z M 418.888889 268.5 L 419.888889 269.333333 L 420.666667 270.333333 L 421.166667 271.555556 L 421.333333 272.888889 L 421.166667 274.222222 L 420.666667 275.388889 L 419.888889 276.444444 L 418.888889 277.222222 L 417.666667 277.722222 L 416.388889 277.888889 L 415.055556 277.722222 L 413.888889 277.222222 L 412.888889 276.444444 L 412.111111 275.388889 L 411.611111 274.222222 L 411.388889 272.888889 L 411.611111 271.555556 L 412.111111 270.333333 L 412.888889 269.333333 L 413.888889 268.5 L 415.055556 268 L 416.388889 267.833333 L 417.666667 268 Z M 392.166667 265.777778 L 393.166667 266.555556 L 393.944444 267.555556 L 394.444444 268.777778 L 394.611111 270.111111 L 394.444444 271.444444 L 393.944444 272.666667 L 393.166667 273.666667 L 392.166667 274.444444 L 391 275 L 389.666667 275.166667 L 388.333333 275 L 387.166667 274.444444 L 386.166667 273.666667 L 385.388889 272.666667 L 384.888889 271.444444 L 384.722222 270.111111 L 384.888889 268.777778 L 385.388889 267.555556 L 386.166667 266.555556 L 387.166667 265.777778 L 388.333333 265.277778 L 389.666667 265.055556 L 391 265.277778 Z M 462.722222 260.722222 L 463.722222 261.5 L 464.5 262.555556 L 465 263.777778 L 465.222222 265.055556 L 465 266.444444 L 464.5 267.611111 L 463.722222 268.666667 L 462.722222 269.444444 L 461.555556 269.944444 L 460.222222 270.111111 L 458.888889 269.944444 L 457.722222 269.444444 L 456.722222 268.666667 L 455.944444 267.611111 L 455.444444 266.444444 L 455.277778 265.055556 L 455.444444 263.777778 L 455.944444 262.555556 L 456.722222 261.5 L 457.722222 260.722222 L 458.888889 260.222222 L 460.222222 260.055556 L 461.555556 260.222222 Z M 428.5 250.666667 L 429.5 251.444444 L 430.277778 252.444444 L 430.777778 253.666667 L 430.944444 255 L 430.777778 256.333333 L 430.277778 257.555556 L 429.5 258.555556 L 428.5 259.333333 L 427.333333 259.888889 L 426 260.055556 L 424.666667 259.888889 L 423.5 259.333333 L 422.5 258.555556 L 421.722222 257.555556 L 421.222222 256.333333 L 421.055556 255 L 421.222222 253.666667 L 421.722222 252.444444 L 422.5 251.444444 L 423.5 250.666667 L 424.666667 250.166667 L 426 249.944444 L 427.333333 250.166667 Z M 520.833333 240.666667 L 519.666667 241 L 518.5 241.277778 L 517.388889 241.555556 L 516.333333 241.833333 L 515.277778 242.055556 L 514.333333 242.277778 L 513.388889 242.555556 L 512.5 242.777778 L 511.666667 243 L 510.833333 243.166667 L 510.111111 243.388889 L 509.388889 243.555556 L 508.722222 243.722222 L 508.111111 243.888889 L 507.555556 244.055556 L 507.055556 244.166667 L 506.555556 244.333333 L 506.111111 244.444444 L 505.777778 244.555556 L 505.388889 244.666667 L 505.111111 244.777778 L 504.666667 244.888889 L 504.5 244.944444 L 504.388889 245 L 503.444444 245.555556 L 502.5 246.055556 L 501.611111 246.611111 L 499.944444 247.611111 L 499.166667 248.166667 L 497.722222 249.166667 L 497.055556 249.722222 L 495.833333 250.722222 L 494.722222 251.722222 L 494.222222 252.222222 L 493.777778 252.722222 L 493 253.722222 L 492.333333 254.722222 L 492.055556 255.222222 L 491.833333 255.722222 L 491.444444 256.888889 L 491.388889 257.166667 L 491.277778 257.666667 L 491.333333 257.222222 L 491.444444 256.888889 L 491.611111 256.055556 L 491.722222 255.555556 L 491.777778 255 L 492 254 L 492.055556 253.5 L 492.166667 253 L 492.333333 251.5 L 492.388889 251.055556 L 492.444444 250.555556 L 492.666667 248.777778 L 492.666667 248.333333 L 492.722222 247.888889 L 492.722222 247.055556 L 492.777778 246.611111 L 492.777778 245.055556 L 492.722222 244.666667 L 492.722222 244 L 492.666667 243.666667 L 492.666667 243.388889 L 492.555556 242.833333 L 492.5 242.611111 L 492.444444 242.333333 L 492.388889 242.111111 L 492.333333 241.944444 L 492.277778 241.722222 L 492.166667 241.388889 L 492.055556 241.277778 L 492 241.166667 L 491.777778 240.944444 L 491.722222 240.833333 L 491.5 240.722222 L 491.388889 240.722222 L 491.277778 240.666667 L 498.166667 238.888889 L 535.388889 231.944444 L 540.277778 231.333333 L 520.833333 236.333333 Z M 402.111111 239.055556 L 403.111111 239.833333 L 403.888889 240.833333 L 404.388889 242.055556 L 404.555556 243.388889 L 404.388889 244.722222 L 403.888889 245.944444 L 403.111111 246.944444 L 402.111111 247.777778 L 400.888889 248.277778 L 399.555556 248.444444 L 398.277778 248.277778 L 397.055556 247.777778 L 396.055556 246.944444 L 395.277778 245.944444 L 394.777778 244.722222 L 394.611111 243.388889 L 394.777778 242.055556 L 395.277778 240.833333 L 396.055556 239.833333 L 397.055556 239.055556 L 398.277778 238.555556 L 399.555556 238.333333 L 400.888889 238.555556 Z M 451.277778 237.444444 L 452.277778 238.222222 L 453.055556 239.277778 L 453.555556 240.444444 L 453.777778 241.833333 L 453.555556 243.166667 L 453.055556 244.333333 L 452.277778 245.388889 L 451.277778 246.166667 L 450.111111 246.666667 L 448.777778 246.833333 L 447.444444 246.666667 L 446.277778 246.166667 L 445.277778 245.388889 L 444.5 244.333333 L 444 243.166667 L 443.833333 241.833333 L 444 240.444444 L 444.5 239.277778 L 445.277778 238.222222 L 446.277778 237.444444 L 447.444444 236.944444 L 448.777778 236.777778 L 450.111111 236.944444 Z M 428.5 231.833333 L 429.5 232.611111 L 430.277778 233.666667 L 430.777778 234.833333 L 430.944444 236.166667 L 430.777778 237.5 L 430.277778 238.722222 L 429.5 239.777778 L 428.5 240.555556 L 427.333333 241.055556 L 426 241.222222 L 424.666667 241.055556 L 423.5 240.555556 L 422.5 239.777778 L 421.722222 238.722222 L 421.222222 237.5 L 421.055556 236.166667 L 421.222222 234.833333 L 421.722222 233.666667 L 422.5 232.611111 L 423.5 231.833333 L 424.666667 231.333333 L 426 231.166667 L 427.333333 231.333333 Z M 497.166667 218.722222 L 498.166667 219.5 L 498.944444 220.5 L 499.444444 221.666667 L 499.611111 222.944444 L 499.444444 224.277778 L 498.944444 225.444444 L 498.166667 226.444444 L 497.166667 227.222222 L 496 227.722222 L 494.722222 227.888889 L 493.388889 227.722222 L 492.222222 227.222222 L 491.222222 226.444444 L 490.444444 225.444444 L 489.944444 224.277778 L 489.777778 222.944444 L 489.944444 221.666667 L 490.444444 220.5 L 491.222222 219.5 L 492.222222 218.722222 L 493.388889 218.222222 L 494.722222 218.055556 L 496 218.222222 Z M 478 208.888889 L 478.944444 209.666667 L 479.722222 210.611111 L 480.222222 211.833333 L 480.388889 213.111111 L 480.222222 214.444444 L 479.722222 215.611111 L 478.944444 216.611111 L 478 217.388889 L 476.777778 217.888889 L 475.5 218.055556 L 474.166667 217.888889 L 473 217.388889 L 472.055556 216.611111 L 471.277778 215.611111 L 470.777778 214.444444 L 470.611111 213.111111 L 470.777778 211.833333 L 471.277778 210.611111 L 472.055556 209.666667 L 473 208.888889 L 474.166667 208.388889 L 475.5 208.166667 L 476.777778 208.388889 Z M 478 208.888889 " transform="matrix(0.0703125,0,0,0.0703125,0,0)"/>
+<path style="fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:4;" d="M 293.444444 337.5 C 293.444444 340.222222 291.222222 342.5 288.5 342.5 C 285.777778 342.5 283.555556 340.222222 283.555556 337.5 C 283.555556 334.722222 285.777778 332.5 288.5 332.5 C 291.222222 332.5 293.444444 334.722222 293.444444 337.5 Z M 293.444444 337.5 " transform="matrix(0.0703125,0,0,0.0703125,0,0)"/>
+<path style="fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:4;" d="M 274.944444 354.055556 C 274.944444 356.833333 272.722222 359.055556 270 359.055556 C 267.277778 359.055556 265.055556 356.833333 265.055556 354.055556 C 265.055556 351.333333 267.277778 349.111111 270 349.111111 C 272.722222 349.111111 274.944444 351.333333 274.944444 354.055556 Z M 274.944444 354.055556 " transform="matrix(0.0703125,0,0,0.0703125,0,0)"/>
+<path style="fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:4;" d="M 274 327.5 C 274 330.277778 271.777778 332.5 269.055556 332.5 C 266.333333 332.5 264.111111 330.277778 264.111111 327.5 C 264.111111 324.777778 266.333333 322.5 269.055556 322.5 C 271.777778 322.5 274 324.777778 274 327.5 Z M 274 327.5 " transform="matrix(0.0703125,0,0,0.0703125,0,0)"/>
+<path style="fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:4;" d="M 249.944444 349.111111 C 249.944444 351.833333 247.777778 354.055556 245.055556 354.055556 C 242.277778 354.055556 240.111111 351.833333 240.111111 349.111111 C 240.111111 346.333333 242.277778 344.111111 245.055556 344.111111 C 247.777778 344.111111 249.944444 346.333333 249.944444 349.111111 Z M 249.944444 349.111111 " transform="matrix(0.0703125,0,0,0.0703125,0,0)"/>
+<path style="fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:4;" d="M 254.888889 329 C 254.888889 331.722222 252.722222 334 249.944444 334 C 247.222222 334 245.055556 331.722222 245.055556 329 C 245.055556 326.222222 247.222222 324 249.944444 324 C 252.722222 324 254.888889 326.222222 254.888889 329 Z M 254.888889 329 " transform="matrix(0.0703125,0,0,0.0703125,0,0)"/>
+<path style="fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:4;" d="M 217.833333 332.555556 C 217.833333 335.277778 215.666667 337.5 212.944444 337.5 C 210.277778 337.5 208.055556 335.277778 208.055556 332.555556 C 208.055556 329.833333 210.277778 327.666667 212.944444 327.666667 C 215.666667 327.666667 217.833333 329.833333 217.833333 332.555556 Z M 217.833333 332.555556 " transform="matrix(0.0703125,0,0,0.0703125,0,0)"/>
+<path style="fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:4;" d="M 205.5 357.166667 C 205.5 359.888889 203.277778 362.055556 200.611111 362.055556 C 197.888889 362.055556 195.722222 359.888889 195.722222 357.166667 C 195.722222 354.444444 197.888889 352.222222 200.611111 352.222222 C 203.277778 352.222222 205.5 354.444444 205.5 357.166667 Z M 205.5 357.166667 " transform="matrix(0.0703125,0,0,0.0703125,0,0)"/>
+<path style="fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:4;" d="M 235.333333 373.277778 C 235.333333 376 233.166667 378.166667 230.444444 378.166667 C 227.777778 378.166667 225.611111 376 225.611111 373.277778 C 225.611111 370.555556 227.777778 368.333333 230.444444 368.333333 C 233.166667 368.333333 235.333333 370.555556 235.333333 373.277778 Z M 235.333333 373.277778 " transform="matrix(0.0703125,0,0,0.0703125,0,0)"/>
+<path style="fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:4;" d="M 217.166667 373.277778 C 217.166667 376 214.944444 378.166667 212.277778 378.166667 C 209.555556 378.166667 207.388889 376 207.388889 373.277778 C 207.388889 370.555556 209.555556 368.333333 212.277778 368.333333 C 214.944444 368.333333 217.166667 370.555556 217.166667 373.277778 Z M 217.166667 373.277778 " transform="matrix(0.0703125,0,0,0.0703125,0,0)"/>
+<path style="fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:4;" d="M 220.611111 396.833333 C 220.611111 399.555556 218.444444 401.722222 215.722222 401.722222 C 213.055556 401.722222 210.833333 399.555556 210.833333 396.833333 C 210.833333 394.111111 213.055556 391.888889 215.722222 391.888889 C 218.444444 391.888889 220.611111 394.111111 220.611111 396.833333 Z M 220.611111 396.833333 " transform="matrix(0.0703125,0,0,0.0703125,0,0)"/>
+<path style="fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:4;" d="M 203.777778 386.944444 C 203.777778 389.666667 201.555556 391.888889 198.888889 391.888889 C 196.166667 391.888889 194 389.666667 194 386.944444 C 194 384.222222 196.166667 382.055556 198.888889 382.055556 C 201.555556 382.055556 203.777778 384.222222 203.777778 386.944444 Z M 203.777778 386.944444 " transform="matrix(0.0703125,0,0,0.0703125,0,0)"/>
+<path style="fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:4;" d="M 537.555556 206.833333 L 541 208.166667 L 538 203.055556 L 530.166667 204.666667 Z M 537.555556 206.833333 " transform="matrix(0.0703125,0,0,0.0703125,0,0)"/>
+</g>
+</svg>
 
-	var blockchainExplorer 	= "./?hash={id}#blockchain_block";
-	var transactionExplorer = "./?hash={id}#blockchain_transaction";
-	var paymentIdExplorer 	= "./?hash={id}#blockchain_payment_id";
-
-	var style_cookie_name = "style";
-	var style_cookie_duration = 365;
-	var style_domain = window.location.hostname;
-
-	$(function(){
-		$('.theme-switch[rel="./css/themes/xolentum/style.css"]').hide();
-		set_style_from_cookie();
-
-		$('.theme-switch').click(function() {
-			swapStyleSheet($(this).attr('rel'));
-			$('.theme-switch').show();
-			$(this).hide();
-			return false;
-		});
-
-		function swapStyleSheet(sheet){
-			$('#theme_link').attr('href',sheet);
-			$('.theme-switch').show();
-			$('.theme-switch[rel="'+sheet+'"]').hide();
-			set_cookie(style_cookie_name, sheet, style_cookie_duration, style_domain);
-		}
-
-		function set_style_from_cookie(){
-			var style = get_cookie(style_cookie_name);
-			if (style.length){
-				swapStyleSheet(style);
-			}
-		}
-		function set_cookie (cookie_name, cookie_value, lifespan_in_days, valid_domain){
-			var domain_string = valid_domain ?
-							   ("; domain=" + valid_domain) : '';
-				document.cookie = cookie_name +
-							   "=" + encodeURIComponent(cookie_value) +
-							   "; max-age=" + 60 * 60 *
-							   24 * lifespan_in_days +
-							   "; path=/" + domain_string;
-		}
-		function get_cookie (cookie_name){
-			var cookie_string = document.cookie;
-			if (cookie_string.length != 0){
-				var cookie_value = cookie_string.match(
-							  '(^|;)[\s]*' +
-							  cookie_name +
-							  '=([^;]*)' );
-				if(cookie_value != null && cookie_value.length>0) {
-					return decodeURIComponent (cookie_value[2]);
-				}
-			}
-			return '';
-		}
-	});
-
-    function getTransactionUrl(id) {
-        return transactionExplorer.replace('{symbol}', symbol.toLowerCase()).replace('{id}', id);
-    }
-
-    $.fn.update = function(txt){
-        var el = this[0];
-        if (el.textContent !== txt)
-            el.textContent = txt;
-        return this;
-    };
-
-    function updateTextClasses(className, text){
-        var els = document.getElementsByClassName(className);
-        for (var i = 0; i < els.length; i++){
-            var el = els[i];
-            if (el.textContent !== text)
-                el.textContent = text;
-        }
-    }
-
-    function updateText(elementId, text){
-
-		var el = document.getElementById(elementId);
-
-		if (!el)
-			return;
-
-        if (el.textContent !== text){
-            el.textContent = text;
-        }
-        return el;
-    }
-
-    function updateTextLinkable(elementId, text){
-        var el = document.getElementById(elementId);
-        if (el.innerHTML !== text){
-            el.innerHTML = text;
-        }
-        return el;
-    }
-
-    var currentPage;
-    var lastStats;
-    var nodeStatus;
-
-    function getReadableHashRateString(hashrate){
-        var i = 0;
-        var byteUnits = [' H', ' kH', ' MH', ' GH', ' TH', ' PH', ' EH', ' ZH', ' YH' ];
-        while (hashrate > 1000){
-            hashrate = hashrate / 1000;
-            i++;
-        }
-        return hashrate.toFixed(2) + byteUnits[i];
-    }
-
-	function getReadableDifficultyString(difficulty, precision){
-		if (isNaN(parseFloat(difficulty)) || !isFinite(difficulty)) return 0;
-		if (typeof precision === 'undefined') precision = 2;
-		var units = ['', 'k', 'M', 'G', 'T', 'P'],
-            number = Math.floor(Math.log(difficulty) / Math.log(1000));
-		if (units[number] === undefined || units[number] === null) {
-            return 0
-        }
-        return (difficulty / Math.pow(1000, Math.floor(number))).toFixed(precision) + ' ' +  units[number];
-    }
-
-    function formatBlockLink(hash){
-        return '<a href="' + getBlockchainUrl(hash) + '">' + hash + '</a>';
-    }
-
-    function getReadableCoins(coins, digits, withoutSymbol){
-        var amount = (parseInt(coins || 0) / coinUnits).toFixed(digits || coinUnits.toString().length - 1);
-        return amount + (withoutSymbol ? '' : (' ' + symbol));
-    }
-
-	function getTransactionType(tx)
-	{
-		switch (tx)
-		{
-			case 0:
-				return "No RingCT";
-			case 1:
-				return "Full RingCT";
-			case 2:
-				return "Simple RingCT";
-			case 3:
-				return "Full Bulletproof v1";
-			case 4:
-				return "Simple Bulletproof v1";
-			case 5:
-				return "Bulletproof v2";
-		}
-	}
-
-    function formatDate(time){
-        if (!time) return '';
-        return new Date(parseInt(time) * 1000).toLocaleString();
-    }
-
-	function formatBytes(a,b) {
-		if(0==a)return"0 Bytes";var c=1024,d=b||2,e=["Bytes","KB","MB","GB","TB","PB","EB","ZB","YB"],f=Math.floor(Math.log(a)/Math.log(c));return parseFloat((a/Math.pow(c,f)).toFixed(d))+" "+e[f]
-	}
-
-	function formatPaymentLink(hash){
-        return '<a href="' + getTransactionUrl(hash) + '">' + hash + '</a>';
-    }
-
-    function pulseLiveUpdate(){
-        var stats_update = document.getElementById('stats_updated');
-        stats_update.style.transition = 'opacity 100ms ease-out';
-        stats_update.style.opacity = 1;
-        setTimeout(function(){
-            stats_update.style.transition = 'opacity 7000ms linear';
-            stats_update.style.opacity = 0;
-        }, 500);
-    }
-
-    window.onhashchange = function(){
-        routePage();
-    };
-
-
-    function fetchLiveStats() {
-        $.ajax({
-            url: "./api/getinfo.php",
-            dataType: 'json',
-            cache: 'false'
-        }).done(function(data, success){
-            pulseLiveUpdate();
-            lastStats = data.result;
-			nodeStatus = success;
-            currentPage.update();
-			nodeInfo();
-        }).always(function () {
-			setTimeout(function() {
-				fetchLiveStats();
-			}, refreshDelay);
-        });
-    }
-
-    function floatToString(float) {
-        return float.toFixed(6).replace(/[0\.]+$/, '');
-    }
-
-	function nodeInfo() {
-        if(nodeStatus) {
-			$('#node_connection').html('Online').addClass('text-success').removeClass('text-danger');
-			$('#node_height').html(parseInt(lastStats['height']));
-			$('#node_diff').html(parseInt(lastStats['difficulty']));
-			$('#node_alt').html(parseInt(lastStats['alt_blocks_count']));
-			$('#node_rpc').html(parseInt(lastStats['rpc_connections_count']));
-			$('#node_inc').html(parseInt(lastStats['incoming_connections_count']));
-			$('#node_out').html(parseInt(lastStats['outgoing_connections_count']));
-			$('#node_white').html(parseInt(lastStats['white_peerlist_size']));
-			$('#node_grey').html(parseInt(lastStats['grey_peerlist_size']));
-			if (lastStats['version'] !== 'undefined'){
-				$('#node_ver').html(lastStats['version']);
-			}
-		} else {
-			$('#node_connection').html('Offline').addClass('text-danger').removeClass('text-success');
-		}
-    }
-
-    var xhrPageLoading;
-    function routePage(loadedCallback) {
-
-		if (currentPage) currentPage.destroy();
-        $('#page').html('');
-		$('#loading').show();
-
-        if (xhrPageLoading)
-            xhrPageLoading.abort();
-
-        $('.hot_link').parent().removeClass('active');
-        var $link = $('a.hot_link[href="' + (window.location.hash || '#') + '"]');
-
-        $link.parent().addClass('active');
-        var page = $link.data('page');
-
-        xhrPageLoading = $.ajax({
-            url: 'pages/' + page,
-            cache: false,
-            success: function (data) {
-                $('#loading').hide();
-                $('#page').show().html(data);
-                currentPage.init();
-                currentPage.update();
-                if (loadedCallback) loadedCallback();
-            }
-        });
-    }
-
-    function getBlockchainUrl(id) {
-        return blockchainExplorer.replace('{id}', id);
-	}
-
-	function getinfo() {
-		$.ajax({
-			url: "./api/getinfo.php",
-			timeout: 1500 //in milliseconds
-		})
-		.done(function (data) {
-			try {
-				lastStats = data.result;
-			} catch (e) {
-				lastStats = data;
-			}
-			routePage(fetchLiveStats);
-		});
-	}
-
-    $(function(){
-		getinfo();
-    });
-
-    // Blockexplorer functions
-    urlParam = function(name){
-        var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-        if (results==null){
-           return null;
-        }
-        else{
-           return results[1] || 0;
-        }
-    }
-
-	$(function() {
-        $('[data-toggle="tooltip"]').tooltip();
-    });
-
-	function hex2a(hexx) {
-		var hex = hexx.toString();//force conversion
-		var str = '';
-		for (var i = 0; i < hex.length; i += 2)
-			str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-		return str;
-	}
-
-	function alertError(message) {
-	$('#page').after(
-		'<div class="alert alert-danger alert-dismissable fade in" style="position: fixed; right: 50px; top: 50px;">'+
-		'<button id="popup_alert" type="button" class="close" ' +
-		'data-dismiss="alert" aria-hidden="true">' +
-		'&times;' +
-		'</button>' +
-		'<strong>' + message + '</strong><br />' +
-		'</div>');
-	}
-
-	function alertSuccess(message) {
-	$('#page').after(
-		'<div class="alert alert-success alert-dismissable fade in" style="position: fixed; right: 50px; top: 50px;">'+
-		'<button id="popup_alert" type="button" class="close" ' +
-		'data-dismiss="alert" aria-hidden="true">' +
-		'&times;' +
-		'</button>' +
-		'<strong>' + message + '</strong><br />' +
-		'</div>');
-	}
-</script>
-
-<div class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Menu</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" style="font-family: 'Montserrat', sans-serif; font-weight: bold;"" href="https://xolentum.org/"></a>
-        
-            <div id="stats_updated"><i class="fa fa-bolt"></i></div>
-        </div>
-
-        <div class="collapse navbar-collapse">
-
-            <ul class="nav navbar-nav navbar-left explorer_menu">
-
-			    <li><a class="hot_link" data-page="home.html" href="#">
-                    <i class="fa fa-cubes" aria-hidden="true"></i> Explorer
-                </a></li>
-
-				<li><a class="hot_link" data-page="api.php" href="#api">
-                    <i class="fa fa-code" aria-hidden="true"></i> API
-				</a></li>
-
-				<li><a class="hot_link" data-page="tools.html" href="#tools">
-                    <i class="fa fa-wrench" aria-hidden="true"></i> Tools
-                </a></li>
-			<!--
-				<button rel="./css/themes/dark/style.css" class="btn btn-default theme-switch" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Switch to Night Mode"><i class="fa fa-moon-o"></i></button>
-				<button rel="./css/themes/white/style.css" class="btn btn-default theme-switch" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Switch to Day Mode"><i class="fa fa-sun-o"></i></button>
-			-->
-	<!-- //-->
-
-                <li style="display:none;"><a class="hot_link" data-page="blockchain_block.html" href="#blockchain_block"><i class="fa fa-cubes"></i> Block
-                </a></li>
-
-                <li style="display:none;"><a class="hot_link" data-page="blockchain_transaction.html" href="#blockchain_transaction"><i class="fa fa-cubes"></i> Transaction
-                </a></li>
-
-				<li style="display:none;"><a class="hot_link" data-page="blockchain_payment_id.html" href="#blockchain_payment_id"><i class="fa fa-cubes"></i> Transactions by Payment ID
-                </a></li>
-
-<!-- //-->
-            </ul>
-
-
-			<div class="nav col-md-6 navbar-right explorer-search">
-				<div class="input-group">
-					<input class="form-control" placeholder="Search by block height, block hash or transaction hash" id="txt_search">
-					<span class="input-group-btn"><button class="btn btn-default" type="button" id="btn_search">
-						<span><i class="fa fa-search"></i> Search</span>
-					</button></span>
+<span class="hide-on-med-and-down">Xolentum</span>
+                            </a>
+                        </li>
+                    </ul>
+            		<form class="header-search" action="javascript:handleSearch()">
+						<div class="input-field">
+							<input id="txt_search" type="search" tabindex="-1"
+								placeholder="Search by block height / hash, transaction hash, address">
+							<label id="btn_search" class="label-icon" for="txt_search"><i
+									class="material-icons">search</i></label>
+							<i class="material-icons" id="close_nav_search">close</i>
+						</div>
+					</form>
+					<ul class="right">
+						<li>
+							<a class="hot_link menu waves-effect waves-block waves-light translation-button"
+								data-page="home.html" href="#">
+								<i class="material-icons">explore</i>
+							</a>
+						</li>
+						<li>
+							<a class="hot_link menu" data-page="pools.html" href="#pools">
+								<i class="material-icons">pool</i>
+							</a>
+						</li>
+						<li>
+							<a class="hot_link menu" data-page="nodes.html" href="#nodes">
+								<i class="material-icons">cloud</i>
+							</a>
+						</li>
+						<li>
+							<a class="hot_link menu" data-page="charts.html" href="#charts">
+								<i class="material-icons">bar_chart</i>
+							</a>
+						</li>
+						<li>
+							<a class="dropdown-trigger waves-effect waves-block waves-light translation-button"
+								href="#!" data-target="dropdown_tools">
+								<i class="material-icons">apps</i>
+							</a>
+						</li>
+						<li class="divider"></li>
+						<li>
+							<div class="switch switch-checkbox" style="margin-top: -2px;">
+								<label>
+									<input type="checkbox" id="switch_mode">
+									<span class="lever"></span>
+								</label>
+							</div>
+						</li>
+						<li class="divider"></li>
+						<li id="stats_updated"><i class="material-icons">notifications_none</i></li>
+					</ul>
 				</div>
+				<div style="clear: both">
 			</div>
+		</nav>
+	</div>
 
+	<ul id="dropdown_tools" class="dropdown-content"
+		style="white-space: nowrap; position: absolute; top: 64px; opacity: 1; display: none;">
+		<li><a class="hot_link menu" data-page="validate_address.html" href="#validate_address">
+				Validate Address
+			</a></li>
+        <li><a class="hot_link menu" data-page="integrated_address.html" href="#integrated_address">
+    			Create Integrated Address
+			</a></li>
+		<li><a class="hot_link menu" data-page="paper_wallet.html" href="#paperwallet">
+				Paper Wallet
+			</a></li>
+		<li><a class="hot_link menu" data-page="api.html" href="#api">
+				API
+			</a></li>
+	</ul>
 
+	<li style="display:none;"><a class="hot_link" data-page="blockchain_block.html"
+		href="#blockchain_block"> Block
+	</a></li>
 
-		</div>
-	  </div>
-</div>
+	<li style="display:none;"><a class="hot_link" data-page="blockchain_transaction.html"
+		href="#blockchain_transaction"> Transaction
+	</a></li>
 
+	<li style="display:none;"><a class="hot_link" data-page="blockchain_block.html"
+		href="#block"> Block
+	</a></li>
 
-<script>
-$('#btn_search').click(function(e) {
+	<li style="display:none;"><a class="hot_link" data-page="blockchain_transaction.html"
+		href="#transaction"> Transaction
+	</a></li>
 
-var text = document.getElementById('txt_search').value;
+	<li style="display:none;"><a class="hot_link" data-page="blockchain_payment_id.html"
+		href="#payment_id"> Transactions by Payment ID
+	</a></li>
 
-function GetSearchBlockbyHeight(){
+	<li style="display:none;"><a class="hot_link" data-page="address.html"
+		href="#address"> Address
+	</a></li>
 
-	var block, xhrGetSearchBlockbyHeight;
-    if (xhrGetSearchBlockbyHeight) xhrGetSearchBlockbyHeight.abort();
-
-			xhrGetSearchBlockbyHeight = $.ajax({
-            url: './api/getblockheaderbyheight.php?height=' + text,
-            dataType: 'json',
-            cache: 'false',
-            success: function(data){
-				if(data.result)
-				{
-					block = data.result.block_header;
-					window.location.href = getBlockchainUrl(block.hash);
-				}
-            }
-        });
-}
-
-function GetSearchBlock(){
-var block, xhrGetSearchBlock;
-	if (xhrGetSearchBlock) xhrGetSearchBlock.abort();
-		xhrGetSearchBlock = $.ajax({
-            url: './api/getblockbyhash.php?hash=' + text,
-            dataType: 'json',
-            cache: 'false',
-			success: function(data) {
-				block = data.result;
-				sessionStorage.setItem('searchBlock', JSON.stringify(block));
-				window.location.href = getBlockchainUrl(block.hash);
-			},
-			error: function(err) {
-				$.ajax({
-						url: './api/gettransactions.php?hash[]=' + text,
-						dataType: 'json',
-						cache: 'false',
-						success: function(data2){
-							sessionStorage.setItem('searchTransaction', JSON.stringify(data2.result));
-								window.location.href = transactionExplorer.replace('{id}', text);
-						},
-						error: function(err2) {
-							alertError("Search failed");
-						}
-					});
-			}
-		});
-}
-
-if ( text.length < 64 ) {
-	GetSearchBlockbyHeight();
-} else if ( text.length == 64 ) {
-	GetSearchBlock();
-} else {
-	alertError("Invalid search term");
-}
-
-e.preventDefault();
-
-});
-
-function alertError(message) {
-	$('#page').after(
-		'<div class="alert alert-danger alert-dismissable fade in" style="position: fixed; right: 50px; top: 50px;">'+
-		'<button id="popup_alert" type="button" class="close" ' +
-		'data-dismiss="alert" aria-hidden="true">' +
-		'&times;' +
-		'</button>' +
-		'<strong>' + message + '</strong><br />' +
-		'</div>');
-	}
-
-$('#txt_search').keyup(function(e){
-        if(e.keyCode === 13)
-            $('#btn_search').click();
-});
-</script>
-
+</header>
 <div id="content">
 	<div class="container">
 
 		<div id="page"></div>
 
-		<p id="loading" class="text-center"><i class="fa fa-circle-o-notch fa-spin"></i></p>
+		<p id="loading" class="center-align"><i class="fa fa-circle-o-notch fa-spin"></i></p>
 
 	</div>
 </div>
 
-<footer>
+<footer class="light-blue darken-4 page-footer">
 	<div class="container">
+		<a class="scrollup btn-floating btn-large halfway-fab waves-effect waves-light light-blue darken-1"><i class="material-icons">keyboard_arrow_up</i></a>
 		<div class="row">
-			<div class="col-lg-4 col-md-4 col-sm-6">
-				<p><small>&copy; 2020 <strong>The Xolentum Developers</strong></small></p>
-				<ul>
-					<li><a href="https://xolentum.org/">Official Website</li>
-					<li><a href="https://github.com/xolentum/">Github</li>
-					<li><a href="https://chat.xolentum.org">Discord</li>
-				</ul>
+			<div class="col l4 s12">
 
-			</div>
-			<div class="col-lg-4 col-md-4 col-sm-6">
-				<p>
-					<small>
-					<!-- This copyright should be left intact -->
-					<a target="_blank" href="https://bitbucket.org/nerva-project/explorer"><i class="fa fa-github"></i> NERVA Blockchain Explorer </a>v0.0.1.0<br />
-					<span class="text-muted">Open source and licensed under the <a href="http://www.gnu.org/licenses/gpl-2.0.html">GPL</a><br />
-					Based on:
-					<strong><a target="_blank" href="https://github.com/Karbovanets/Karbowanec-Blockchain-Explorer" class="text-muted"> Karbowanec Blockchain Explorer </a>v1.1.3 &<br />
-					cryptonote-universal-pool</strong></span>
-					</small>
-				</p>
-			</div>
-			<div class="col-lg-4 col-md-4 col-sm-6">
-
-				<strong class="text-info">Node info</strong>
+				<h5>Node info</h5>
 
 				<ul class="text-info">
 					<li>Status: <span id="node_connection" class="text-danger">Offline</span></li>
@@ -538,35 +188,79 @@ $('#txt_search').keyup(function(e){
 					<li>Grey peers: <span id="node_grey">...</span></li>
 				</ul>
 
+
+			</div>
+			<div class="col l4 s12">
+				<p style="font-size: 12px;">
+					<!-- This copyright should be left intact -->
+					Powered by <a target="_blank"
+    					href="https://github.com/xolentum/block-explorer/">
+						<i class="fab fa-github"></i> Xolentum Block Explorer</a>
+                        <br />
+
+                    Based on<a target="_blank"
+						href="https://github.com/Karbovanets/Karbowanec-Blockchain-Explorer">
+						<i class="fab fa-github"></i> Karbowanec Blockchain Explorer</a>
+					v. 1.2.4.<br />
+				</p>
+
+                <br><br>
+
+				<ul class="icons">
+                    <li><a href="https://www.xolentum.org/"><i class="fas fa-globe"></i></a></li>
+                    <li><a href="https://www.facebook.com/xolentum/"><i class="fab fa-facebook"></i></a></li>
+                    <li><a href="https://twitter.com/xolentum/"><i class="fab fa-twitter"></i></a></li>
+                    <li><a href="https://github.com/xolentum/"><i class="fab fa-github"></i></a></li>
+                    <li><a href="https://medium.com/@xolentum/"><i class="fab fa-medium"></i></a></li>
+                    <li><a href="https://discord.gg/FTJ4tDQ"><i class="fab fa-discord"></i></a></li>
+                    <li><a href="https://t.me/xolentum/"><i class="fab fa-telegram"></i></a></li>
+        	    </ul>
+
+			</div>
+			<div class="col l4 s12">
+
+				<h5>Specification</h5>
+				<ul class="text-info">
+					<li>Ticker: XOL</li>
+                    <li>Proof-of-Work algorithm: RandomX</li>
+					<li>Block time: 60 seconds</li>
+					<li>Difficulty: Re-targets each block</li>
+					<li>Block reward: 8 XOL</li>
+					<li>Divisible: up to 10<sup>12</sup> atomic units (up to 12 decimal places)</li>
+					<li>Emission: &infin;</li>
+				</ul>
+
 			</div>
 		</div>
-    </div>
+	</div>
+	<div class="footer-copyright">
+		<div class="container" style="text-align: center">
+			&copy; 2021 <strong>The Xolentum Project</strong>
+		</div>
+	</div>
 </footer>
-<a href="#" class="scrollup"><i class="fa fa-chevron-circle-up"></i></a>
-	<script type="text/javascript">
-			jQuery(function($) { $(document).ready(function() {
-				$(window).scroll(function(){
-					if ($(this).scrollTop() > 500) {
-						$('.scrollup').fadeIn();
-					} else {
-						$('.scrollup').fadeOut();
-					}
-				});
+<script>
+	$('.dropdown-trigger').dropdown({
+		inDuration: 300,
+		outDuration: 225,
+		hover: false, // Activate on hover
+		belowOrigin: true, // Displays dropdown below the button
+		alignment: 'right' // Displays dropdown with edge aligned to the left of button
+		}
+	);
 
-				$('.scrollup').click(function(){
-					$("html, body").animate({ scrollTop: 0 }, 600);
-					return false;
-				});
-
-				$('.scrollup').css('opacity','0.3');
-
-				$('.scrollup').hover(function(){
-					$(this).stop().animate({opacity: 0.9}, 400);
-				 }, function(){
-					$(this).stop().animate({opacity: 0.3}, 400);
-				});
-
-			});});
-	</script>
+	$('#close_nav_search').hide();
+	$('#close_nav_search').click(function () {
+		$('#txt_search').val("");
+	});
+	$('#txt_search').focus(function () {
+		$('#close_nav_search').show();
+	});
+	$('#txt_search').blur(function () {
+		setTimeout(function () {
+			$('#close_nav_search').hide();
+		}, 300)
+	});
+</script>
 </body>
 </html>

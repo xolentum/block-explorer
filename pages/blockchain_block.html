@@ -1,162 +1,436 @@
-<h2><i class="fa fa-cube fa-fw" aria-hidden="true"></i> Block <small id="block.hash" style="word-break: break-all;"></small></h2>
-<div class="row">
-    <div class="col-md-6 stats">
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="Block index in the chain, counting from zero (i.e. genesis block)."><i class="fa fa-question-circle"></i></span> Height: <span id="block_height"><span id="block.height"></span></span></div>
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="Block timestamp displayed as UTC. The timestamp correctness it up to miner, who mined the block."><i class="fa fa-question-circle"></i></span> Timestamp: <span id="block.timestamp"></span></div>
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="“major version”.“minor version”"><i class="fa fa-question-circle"></i></span> Version: <span id="block.version"></span></div>
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="How difficult it is to find a solution for the block."><i class="fa fa-question-circle"></i></span> Difficulty: <span id="block.difficulty"></span></div>
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="Number of transactions in the block."><i class="fa fa-question-circle"></i></span> Transactions: <span id="block.transactions"></span></a></div>
-    </div>
+<style>
+    .card-action h2 {
+        font-size: 1.25rem;
+        margin: 0;
+    }
 
-    <div class="col-md-6 stats">
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="Depth of the block in the chain."><i class="fa fa-question-circle"></i></span> Depth: <span id="block.depth"></span></div>
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="Size of the whole block, i.e. block header plus all transactions."><i class="fa fa-question-circle"></i></span> Total block size, bytes: <span id="block.blockSize"></span></div>
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="Noce of the block hash."><i class="fa fa-question-circle"></i></span> Block nonce: <span id="block.nonce"></span></div>
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="Miner transaction hash."><i class="fa fa-question-circle"></i></span> Miner TX hash: <span id="block.minerTxHash"></span></div>
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="Actual amount of coins the miner received for finding the block. &lt;reward&gt; = &lt;base reward&gt; × (1 − &lt;penalty&gt;) + &lt;transactions fee&gt;"><i class="fa fa-question-circle"></i></span> Reward: <span id="block.reward"></span></div>
+    table.blocktxs-table {
+        width: 100%;
+        border-spacing: 0;
+    }
+
+    table.blocktxs-table th,
+    table.blocktxs-table td,
+    table.blocktxs-table tr,
+    table.blocktxs-table thead,
+    table.blocktxs-table tfoot
+    table.blocktxs-table tbody {
+        display: block;
+        text-align: center
+    }
+
+    table.blocktxs-table thead tr,
+    table.blocktxs-table tfoot tr {
+        /* fallback */
+        width: 97%;
+		/* minus scroll bar width */
+		width: -webkit-calc(100% - 16px);
+		width:    -moz-calc(100% - 16px);
+		width:         calc(100% - 16px);
+	}
+
+	table.blocktxs-table tr:after {
+		content: ' ';
+		display: block;
+		visibility: hidden;
+		clear: both;
+	}
+
+	table.blocktxs-table tbody {
+		display: block;
+		max-height: 214px;
+		overflow-y: scroll;
+		overflow-x: hidden;
+	}
+
+	table.blocktxs-table thead th,
+	table.blocktxs-table tbody td,
+	table.blocktxs-table tfoot td {
+		width: 10%;
+		float: left;
+	}
+
+	table.blocktxs-table thead th:nth-child(2),
+	table.blocktxs-table tbody td:nth-child(2),
+	table.blocktxs-table tfoot td:nth-child(2) {
+		min-width: 50%;
+	}
+
+    table.blocktxs-table thead th:nth-child(3),
+    table.blocktxs-table tbody td:nth-child(3),
+	table.blocktxs-table tfoot td:nth-child(3) {
+		min-width: 15%;
+	}
+
+    table.blocktxs-table thead th:last-child,
+	table.blocktxs-table tbody td:last-child,
+	table.blocktxs-table tfoot td:last-child {
+		min-width: 15%;
+	}
+
+	td.date-time {
+		padding: 2px;
+		line-height: 90%;
+	}
+
+	table.blocktxs-table td.date-time {
+		padding-top: 10px;
+	}
+
+	table.blocktxs-table {
+		min-width: 1080px;
+	}
+</style>
+
+<div style="height: 10px; clear: both;"></div>
+<div class="row">
+    <div class="col s12">
+        <h2 class="light-blue-text text-darken-4">
+            <i class="fa fa-cube fa-fw" aria-hidden="true"></i> Block
+            <small tooltipped data-position="top" data-tooltip="Unique fingerprint of the block." id="block_hash" style="word-break: break-all; word-wrap: break-word;"></small>
+        </h2>
     </div>
 </div>
+<div id="block_details" style="display: none;">
+    <div class="row">
+        <div class="col s12 l8">
+            <ul class="collection">
+                <li class="collection-item">
+            		<i class="fas fa-bars fa-fw tooltipped" data-position="top" data-tooltip="Block height in the chain, counting from zero (i.e. genesis block)."></i>
+    				Height: <span id="block_index"></span>
+    			</li>
+    			<li class="collection-item">
+    				<i class="fas fa-check-double fa-fw tooltipped" data-position="top" data-tooltip="Confirmations, block depth from the tip of the chain."></i>
+    				Depth: <span id="block_depth"></span>
+    			</li>
+    			<li class="collection-item">
+    				<i class="fas fa-clock fa-fw tooltipped" data-position="top" data-tooltip="Block timestamp displayed as UTC. The timestamp correctness it up to miner, who mined the block."></i>
+    				Timestamp: <span id="block_timestamp"></span> &bull; <span id="block_time"></span> (<time id="block-timeago"></time>)
+    			</li>
+    			<li class="collection-item">
+    				<i class="fas fa-link fa-fw tooltipped" data-position="top" data-tooltip="The hash of the previous block."></i>
+    				Previous block hash: <a id="prev_hash" title="Previous block"><span id="block_prev_hash"
+    				style="word-break: break-all; word-wrap: break-word;"></span></a>
+    			</li>
+    			<li class="collection-item">
+    				<i class="fas fa-stamp fa-fw tooltipped" data-position="top" data-tooltip="The hash of the coinbase (reward) transaction for the block."></i>
+    				Miner TX Hash: <span id="block_miner_tx_hash" style="word-break: break-all; word-wrap: break-word;"></span>
+    			</li>
+    			<li class="collection-item">
+    				<i class="fas fa-flag fa-fw tooltipped" data-position="top" data-tooltip="&laquo;major version&raquo;.&laquo;minor version&raquo;"></i>
+    				Version: <span id="block_version"></span>
+    			</li>
+    			<li class="collection-item">
+    				<i class="fas fa-lock-open fa-fw tooltipped" data-position="top" data-tooltip="How difficult it is to find a solution for the block. More specifically, it`s mathematical expectation for number of hashes someone needs to calculate in order to find a correct nonce value solving the block."></i>
+    				Difficulty: <span id="block_difficulty"></span>
+    			</li>
+    			<li class="collection-item">
+    				<i class="fas fa-unlock-alt fa-fw tooltipped" data-position="top" data-tooltip="Cumulative difficulty is the sum of all block's difficulties up to this block including."></i>
+    				Cumulative difficulty: <span id="block_cumulative_difficulty"></span>
+    			</li>
+    			<li class="collection-item">
+    			<i class="fas fa-coins fa-fw tooltipped" data-position="top" data-tooltip="Cumulative amount of coins issued by all the blocks in blockchain from the genesis and up to this block."></i>
+    				Total coins in the network: <span id="block_totalCoins"></span>
+    			</li>
+    			<li class="collection-item">
+    				<i class="fas fa-archive fa-fw tooltipped" data-position="top" data-tooltip="Cumulative number of transactions in the blockchain, from the genesis block and up to this block."></i>
+    				Total transactions in the network: <span id="block_totalTransactions"></span>
+    			</li>
+    		</ul>
+    	</div>
+    	<div class="col s12 l4">
+    		<ul class="collection">
+    			<li class="collection-item">
+    				<i class="fas fa-code-branch fa-fw tooltipped" data-position="top" data-tooltip="True, if the block belongs to an alternative chain. In such case all the transactions, excluding coinbase, are removed from the block back to transaction pool to be included in another block. It means there is no reward for the miner."></i>
+    				Orphan: <span id="block_orphan"></span>
+    			</li>
+    			<li class="collection-item">
+    				<i class="fas fa-puzzle-piece fa-fw tooltipped" data-position="top" data-tooltip="The nonce a field whose value is adjusted by miners so that the hash of the block will meet difficulty requirement. Any change to the block data (such as the nonce) will make the block hash completely different."></i>
+    				Nonce: <span id="block_nonce"></span>
+    			</li>
+    			<li class="collection-item">
+    				<i class="fas fa-weight-hanging fa-fw tooltipped" data-position="top" data-tooltip="Cumulative size of all transactions in the block, including coinbase. In case it's exceeding 'effective txs median' the reward penalty occurs and therefore miner receives less reward."></i>
+    				Total transactions size: <span id="block_transactionsSize"></span>
+    			</li>
+    			<li class="collection-item">
+    				<i class="fas fa-weight-hanging fa-fw tooltipped" data-position="top" data-tooltip="Size of the whole block, i.e. block header plus all transactions."></i>
+    				Total block size: <span id="block_blockSize"></span>
+    			</li>
+    			<li class="collection-item">
+    				<i class="fas fa-award fa-fw tooltipped" data-position="top" data-tooltip="Amount of coins the miner received for finding the block."></i>
+    				Reward: <span id="block_reward"></span>
+    			</li>
+    		</ul>
+    	</div>
 
-<h3 class="transactions"><i class="fa fa-exchange fa-fw" aria-hidden="true"></i> Тransactions</h3>
-<div class="table-responsive">
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th><i class="fa fa-paw"></i> Hash</th>
-        </tr>
-        </thead>
-        <tbody id="transactions_rows">
-
-        </tbody>
-    </table>
+    </div>
+    <div class="row">
+    	<div class="col s12">
+    		<div class="card hoverable">
+    			<div class="card-action grey lighten-5">
+    				<h3 class="light-blue-text text-darken-4">
+    					<i class="fas fa-exchange-alt tooltipped" data-position="top"
+    					data-tooltip="Number of transactions in the block, including coinbase transaction (which transfers block reward to the miner)."></i>
+    					Тransactions <span class="badge light-blue darken-3 white-text" id="block_transactions"></span></h3>
+    			</div>
+    			<div class="card-content">
+                    <div id="empty_block_txs" style="display: none;">
+        			    <p>No transactions in the block.</p>
+				    </div>
+                    <div id="block_txs" style="display: block;">
+        				<div class="row">
+        					<div class="col s12 table-responsive" id="block_txs">
+        						<table class="highlight centered blocktxs-table">
+        							<thead>
+        								<tr>
+        									<th>№</th>
+        									<th><i class="fa fa-paw"></i> Hash</th>
+                                            <th><i class="fa fa-flag"></i> Version</th>
+        									<th><i class="fas fa-donate"></i> Fee</th>
+        								</tr>
+        							</thead>
+        							<tbody id="transactions_rows">
+    
+        							</tbody>
+        						</table>
+        					</div>
+        				</div>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+</div>
+<div class="card-panel" id="block_not_found" style="display: none;">
+        <div class="row">
+			<div class="col-md-12">
+				<h6 class="text-danger">
+					<i class="fa fa-exclamation-triangle fa-lg text-danger"></i>
+					Block not found
+				</h6>
+			</div>
+		</div>
+	</div>
 </div>
 
 <script>
-    var block, xhrGetBlock, xhrGetBlock2;
+	var block, xhrGetBlock;
+	var refresh, next = false;
 
-    currentPage = {
-        destroy: function(){
+	currentPage = {
+		destroy: function () {
 			if (xhrGetBlock) xhrGetBlock.abort();
-			if (xhrGetBlock2) xhrGetBlock2.abort();
-        },
-        init: function(){
-            getBlock();
-        },
-        update: function(){
-        }
-    };
+		},
+		init: function () {
+			$('.tooltipped').tooltip();
+		},
+		update: function () {
+			getBlock();
+		}
+	};
 
-    function getBlock(){
+	function getBlock() {
 		if (xhrGetBlock) xhrGetBlock.abort();
-		if (xhrGetBlock2) xhrGetBlock2.abort();
 		var searchBlk = $.parseJSON(sessionStorage.getItem('searchBlock'));
 		if (searchBlk) {
 			renderBlock(searchBlk);
 		} else {
 			xhrGetBlock = $.ajax({
-				url: './api/getblockbyhash.php?hash=' + urlParam('hash'),
+				url: api + '/json_rpc',
+				method: "POST",
+				data: JSON.stringify({
+					jsonrpc: "2.0",
+					id: "explorer_block_page",
+					method: "get_block",
+					params: {
+						hash: urlParam('hash'),
+					}
+				}),
 				dataType: 'json',
 				cache: 'false',
-				success: function(data){
-					block = data.result;
-					renderBlock(block);
+				success: function (data) {
+                    if (typeof data.result !== 'undefined') {
+                        $('#block_details').show();
+                        $('#block_not_found').hide();
+
+                        result = data.result
+    					block = data.result.block_header;
+    					renderBlock(block, result);
+
+                        $.ajax({
+                            url: api + '/json_rpc',
+                            method: "POST",
+            		        data: JSON.stringify({
+        				        jsonrpc: "2.0",
+        				        id: "explorer_get_generated_coins",
+        				        method: "get_generated_coins",
+        			        }),
+                            dataType: 'json',
+                            cache: 'false',
+                            success: function (data) {
+                                updateText('block_totalCoins', getReadableCoins(data.result.coins, 2));
+                            }
+                        });
+                    } else {
+                        $('#block_details').hide();
+                        $('#block_not_found').show();
+                    }
 				}
 			});
 		}
 		sessionStorage.removeItem('searchBlock');
-    }
-
-	function renderBlock(data)
-	{
-		updateText('block.hash', data.block_header.hash);
-		updateText('block.minerTxHash', data.miner_tx_hash);
-		updateText('block.height', data.block_header.height);
-		updateText('block.depth', data.block_header.depth);
-		updateText('block.timestamp', formatDate(data.block_header.timestamp));
-		updateText('block.version', data.block_header.major_version);
-		updateText('block.difficulty', data.block_header.difficulty);
-		updateText('block.transactions', data.block_header.num_txes);
-		updateText('block.blockSize', formatBytes(parseInt(data.block_header.block_size)));
-		updateText('block.nonce', data.block_header.nonce);
-		updateText('block.reward', getReadableCoins(data.block_header.reward, 4));
-
-		var hashes = 'hash[]=' + data.miner_tx_hash;
-
-		for (var i = 0; i < data.block_header.num_txes; i++)
-			hashes += '&hash[]=' + data.tx_hashes[i];
-
-		$.ajax({
-			url: './api/gettransactions.php?' + hashes,
-			dataType: 'json',
-			cache: 'false',
-			success: function(data2){
-				renderTransactions(data2.result);
-			},
-			error: function (ajaxContext) {
-			}
-		});
-
-		makePrevBlockLink(data.block_header.prev_hash);
-
-		$.ajax({
-			url: './api/getblockheaderbyheight.php?height=' + (data.block_header.height + 1),
-			dataType: 'json',
-			cache: 'false',
-			success: function(data3){
-				makeNextBlockLink(data3.result.block_header.hash);
-			},
-			error: function (ajaxContext) {
-			}
-		});
-
 	}
 
-    function getTransactionCells(transaction){
-        return '<td>' + formatPaymentLink(transaction.tx_hash) + '</td>';
-    }
+	function renderBlock(block, result) {
+		updateText('block_hash', block.hash);
+		updateText('block_depth', block.depth);
+		updateText('block_prev_hash', block.prev_hash);
+		updateText('block_miner_tx_hash', block.miner_tx_hash);
+		document.getElementById('prev_hash').setAttribute('href', getBlockchainUrl(block.prev_hash));
+		updateText('block_timestamp', block.timestamp);
+		updateText('block_time', formatDate(block.timestamp));
+		$("#block-timeago").timeago('update', new Date(block.timestamp * 1000).toISOString());
+		updateText('block_version', block.major_version + '.' + block.minor_version);
+		updateText('block_nonce', block.nonce);
+		updateText('block_cumulative_difficulty', block.cumulative_difficulty);
+		updateText('block_difficulty', block.difficulty);
+		updateText('block_orphan', block.orphan_status ? "Yes" : "No");
+		$("#block_orphan").addClass(block.isOrphaned ? "red-text" : "green-text");
+		updateText('block_transactions', block.num_txes);
+		updateText('block_transactionsSize', formatBytes(parseInt(block.block_weight)));
+		updateText('block_blockSize', formatBytes(parseInt(block.block_size)));
+		updateText('block_reward', getReadableCoins(block.reward));
 
-    function getTransactionRowElement(transaction, jsonString){
-
-        var row = document.createElement('tr');
-        row.setAttribute('data-json', jsonString);
-        row.setAttribute('data-hash', transaction.tx_hash);
-        row.setAttribute('id', 'transactionRow' + transaction.tx_hash);
-
-        row.innerHTML = getTransactionCells(transaction);
-
-        return row;
-    }
-
-    function renderTransactions(transactionResults){
-
-		var $transactionsRows = $('#transactions_rows');
-
-		for (var i = 0; i < transactionResults.length; i++)
-		{
-			var transaction = transactionResults[i];
-            var transactionJson = JSON.stringify(transaction);
-            var existingRow = document.getElementById('transactionRow' + transaction.tx_hash);
-            if (existingRow && existingRow.getAttribute('data-json') !== transactionJson)
-                $(existingRow).replaceWith(getTransactionRowElement(transaction, transactionJson));
-            else if (!existingRow)
-                $transactionsRows.append(getTransactionRowElement(transaction, transactionJson));
+		updateText('block_totalTransactions', lastStats.tx_count.toString());
+		
+        if (typeof result.tx_hashes == 'undefined') {
+            $('#block_txs').hide();
+    		$('#empty_block_txs').show();
+        } else {    
+            renderTransactions(result.tx_hashes);
         }
-    }
 
-	function makeNextBlockLink(blockHash){
-		$('#block_height').append(' <a href="' + getBlockchainUrl(blockHash) + '" title="Next block"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>');
+		// if this block is orphan make its height a link to the main chain block
+		if (!refresh)
+			if (block.orphan_status) {
+				var m_block, xhrGetSearchBlockbyHeight;
+				if (xhrGetSearchBlockbyHeight) xhrGetSearchBlockbyHeight.abort();
+
+				xhrGetSearchBlockbyHeight = $.ajax({
+					url: api + '/json_rpc',
+					method: "POST",
+					data: JSON.stringify({
+						jsonrpc: "2.0",
+						id: "explorer_block_page",
+						method: "get_block_header_by_height",
+						params: {
+							height: block.height
+						}
+					}),
+					dataType: 'json',
+					cache: 'false',
+					success: function (data) {
+						if (data.result) {
+							m_block = data.result.block_header;
+							$('#block_index').append(' <a href="' + getBlockchainUrl(m_block.hash) +
+								'" title="Main chain block">' + block.height + '</a>');
+						}
+					}
+				});
+			} else {
+				$('#block_index').text(block.height);
+			}
+
+		if (!refresh) {
+			makePrevBlockLink(block.prev_hash);
+		}
+
+		$.ajax({
+			url: api + '/json_rpc',
+			method: "POST",
+			data: JSON.stringify({
+				jsonrpc: "2.0",
+				id: "explorer_block_page",
+				method: "get_block_header_by_height",
+				params: {
+					height: (block.height + 1)
+				}
+			}),
+			dataType: 'json',
+			cache: 'false',
+			success: function (data) {
+				if (data.result) {
+					var nextBlockHash = data.result.block_header.hash;
+				}
+				if (nextBlockHash && !next) {
+					makeNextBlockLink(nextBlockHash);
+					next = true;
+				}
+			},
+			error: function (ajaxContext) {}
+		});
+		refresh = true;
 	}
 
-	function makePrevBlockLink(blockHash){
-		$('#block_height').prepend('<a href="' + getBlockchainUrl(blockHash) + '" title="Previous block"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i></a> ');
+	function getTransactionCells(transaction) {
+		return '<td>' + '</td>' +
+			'<td>' + formatPaymentLink(transaction.tx_hash) + '</td>' +
+            '<td>' + transaction.json.version + '</td>' +
+			'<td>' + getReadableCoins(transaction.json.rct_signatures.txnFee, 4, true) + '</td>';
 	}
 
-	function formatPrevNextBlockLink(hash){
-        return '<a href="' + getBlockchainUrl(hash) + '">' + hash + '</a>';
-    }
+	function getTransactionRowElement(transaction, jsonString) {
+		var row = document.createElement('tr');
+		row.setAttribute('data-json', jsonString);
+		row.setAttribute('data-hash', transaction.tx_hash);
+		row.setAttribute('id', 'transactionRow' + transaction.tx_hash);
+		row.innerHTML = getTransactionCells(transaction);
+		return row;
+	}
 
-	$(function() {
-		$('[data-toggle="tooltip"]').tooltip();
-	});
-//# sourceURL=./pages/blockchain_block.html
+	function renderTransactions(transactionHashes) {
+        var transactionResults;
+
+        $.ajax({
+                url: api + '/get_transactions',
+                method: "POST",
+    		    data: JSON.stringify({
+				    txs_hashes : transactionHashes,
+				    decode_as_json: true,
+			    }),
+                dataType: 'json',
+                cache: 'false',
+                success: function (data) {
+                    transactionResults = processTxData(data).result;
+
+                    var $transactionsRows = $('#transactions_rows');
+                	for (var i = 0; i < transactionResults.length; i++) {
+                        var transaction = transactionResults[i];
+                        var transactionJson = JSON.stringify(transaction);
+            			var existingRow = document.getElementById('transactionRow' + transaction.tx_hash);
+            			if (existingRow && existingRow.getAttribute('data-json') !== transactionJson) {
+                            $(existingRow).replaceWith(getTransactionRowElement(transaction, transactionJson));
+            			} else if (!existingRow) {
+                            var transactionElement = getTransactionRowElement(transaction, transactionJson);
+            				$transactionsRows.append(transactionElement);
+            			}
+            			$(transactionElement).find("td:first").html(i);
+            		}
+                }
+        });
+	}
+
+	function makeNextBlockLink(blockHash) {
+		$('#block_index').append(' <a href="' + getBlockchainUrl(blockHash) +
+			'" title="Next block"><i class="fa fa-chevron-circle-right ooltipped" data-position="top" data-tooltip="Next block"" aria-hidden="true"></i></a>');
+	}
+
+	function makePrevBlockLink(blockHash) {
+		$('#block_index').prepend('<a href="' + getBlockchainUrl(blockHash) +
+			'" title="Previous block"><i class="fa fa-chevron-circle-left tooltipped" data-position="top" data-tooltip="Previous block" aria-hidden="true"></i></a> ');
+	}
+
+	function formatPrevNextBlockLink(hash) {
+		return '<a href="' + getBlockchainUrl(hash) + '">' + hash + '</a>';
+	}
+
 </script>

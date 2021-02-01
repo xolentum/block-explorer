@@ -1,0 +1,103 @@
+<div style="height: 10px; clear: both;"></div>
+<div class="row">
+    <div class="col s12">
+        <div class="card hoverable">
+            <div class="card-action grey lighten-5">
+                <h2 class="light-blue-text text-darken-4"><i class="fas fa-envelope"></i>  Create Integrated Address</h2>
+            </div>
+        	<div class="card-content">
+				<div class="row">
+					<div class="col s12 l12">
+						<form id="integrated_address_form">
+							<div class="input-field col s12">
+								<input id="public_address" type="text" class="integrate">
+								<label for="public_address">Address</label>
+							</div>
+							<div class="input-field col s12">
+								<a id="create_integrated_address" class="waves-effect waves-light btn light-blue darken-4"><i class="fas fa-search"></i> Create</a></p>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div id="creation_result" class="card-action">
+				<div class="row">
+					<div class="col s12 l12">
+						<p id="created"><i class="fas fa-2x"></i> <span></span></p>
+						<div id="info_container">
+							<p>Integrated Address: <span id="integratedAddress"></span></p>
+        					<p>Payment ID: <span id="paymentID"></span></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="./js/paperwallet/languages.js"></script>
+<script src="./js/paperwallet/paperwallet.js"></script>
+<script src="./js/nacl-fast-cn.js"></script>
+<script src="./js/cn_helper.js"></script>
+
+<script>
+	var xhrCreateIntegratedAddress;
+	var publicAddress = $("#public_address");
+	var integratedAddress = $("#integratedAddress");
+	var paymentID = $("#paymentID");
+	var result = $('#created');
+	var result_icon = $("#created").find("i");
+	var result_text = $("#created").find("span");
+	var result_container = $("#creation_result");
+	var info_container = $("#info_container");
+	result_container.hide();
+
+	currentPage = {
+		destroy: function () {
+			if (xhrCreateIntegratedAddress) xhrCreateIntegratedAddress.abort();
+		},
+		init: function () {
+			$('.tooltipped').tooltip();
+		},
+		update: function () {}
+	};
+
+	$("#create_integrated_address").click(function () {
+		result_container.hide();
+		result_text.empty();
+		integratedAddress.empty();
+		paymentID.empty();
+
+		if (!publicAddress.val()) {
+			M.toast({html: 'Fill the address field!', classes: 'red'}, 5000);
+			return;
+		}
+
+		createIntegratedAddress();
+	});
+
+	function createIntegratedAddress() {
+		if (xhrCreateIntegratedAddress) xhrCreateIntegratedAddress.abort();
+
+        var address = publicAddress.val();
+
+        try {
+		    var res = create_integrated_address_rand(address);
+
+            result_text.text("Address created!");
+    		result_container.addClass("light-green lighten-5");
+			result.addClass("teal-text text-darken-2");
+			result_icon.addClass("fa-check");
+			info_container.show();
+
+            integratedAddress.text(res.address);
+    		paymentID.text(res.paymentId);
+
+            result_container.show();
+
+		}
+		catch (e) {
+		    M.toast({html: 'Could not create address!', classes: 'red'}, 5000);
+		}
+	}
+</script>
