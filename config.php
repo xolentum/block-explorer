@@ -1,8 +1,8 @@
 <?php
-$node = 'http://xolentum.xyz:13580';
+$node = 'https://xes.sohamb03.me/node_web';
 return array(
-    'api' => 'http://xolentum.xyz:13580',
+    'api' => 'https://xes.sohamb03.me/node_web',
     'blockTargetInterval' => 60,
-	'coinUnits' => 1000000000000,
-	'coinDecimals' => 12
+    'coinUnits' => 1000000000000,
+    'coinDecimals' => 12
 );
