@@ -1,5 +1,5 @@
-// Copyright (c) 2018, The NERVA Project
-// Copyright (c) 2014-2017, MyMonero.com
+// Copyright (c) 2020, The Xolentum Project
+// Copyright (c) 2014-2019, MyMonero.com
 
 // Based on cn_util.js
 // Original Author: Lucas Jones
@@ -58,7 +58,7 @@ function hexToBin(hex)
     var res = new Uint8Array(hex.length / 2);
     for (var i = 0; i < hex.length / 2; ++i)
         res[i] = parseInt(hex.slice(i * 2, i * 2 + 2), 16);
-    
+
     return res;
 }
 
@@ -103,17 +103,17 @@ function swapEndian(hex)
     var data = "";
     for (var i=1; i <= hex.length / 2; i++)
         data += hex.substr(0 - 2 * i, 2);
-    
+
     return data;
 }
 
 function d2h(integer)
 {
-    if (typeof integer !== "string" && integer.toString().length > 15) throw "integer should be entered as a string for precision"; 
+    if (typeof integer !== "string" && integer.toString().length > 15) throw "integer should be entered as a string for precision";
     var padding = "";
     for (i = 0; i < 63; i++)
         padding += "0";
-    
+
     return (padding + JSBigInt(integer).toString(16).toLowerCase()).slice(-64);
 }
 
@@ -151,7 +151,7 @@ function hashToScalar(buf)
 function secKeyToPub(sec)
 {
     if (sec.length !== 64) throw "sec_key_to_pub: Invalid sec length";
-    
+
     return binToHex(nacl.ll.ge_scalarmult_base(hexToBin(sec)));
 }
 
@@ -171,7 +171,7 @@ function derivationToScalar(derivation, output_index)
 function generateKeyDerivation(pub, sec)
 {
     if (pub.length !== 64 || sec.length !== 64) throw "generate_key_derivation: Invalid pub or sec keys lengths";
-    
+
     var P = geScalarMult(pub, sec);
     return geScalarMult(P, d2s(8)); //mul8 to ensure group
 }
@@ -179,7 +179,7 @@ function generateKeyDerivation(pub, sec)
 function derivePublicKey(derivation, out_index, pub)
 {
     if (derivation.length !== 64 || pub.length !== 64) throw "derivePublicKey: Invalid derivation or pub key input lengths!";
-    
+
     var s = derivationToScalar(derivation, out_index);
     return binToHex(nacl.ll.ge_add(hexToBin(pub), hexToBin(secKeyToPub(s))));
 }
@@ -187,7 +187,7 @@ function derivePublicKey(derivation, out_index, pub)
 function scSub(scalar1, scalar2)
 {
     if (scalar1.length !== 64 || scalar2.length !== 64) throw "scSub: Invalid scalar1 or scalar2 input lengths!";
-    
+
     var scalar1_m = Module._malloc(STRUCT_SIZES.EC_SCALAR);
     var scalar2_m = Module._malloc(STRUCT_SIZES.EC_SCALAR);
     Module.HEAPU8.set(hexToBin(scalar1), scalar1_m);
@@ -212,7 +212,7 @@ function decodeRctEcdh(ecdh, key)
     };
 }
 
-function geDoubleScalarmultBaseVartime(c, P, r) 
+function geDoubleScalarmultBaseVartime(c, P, r)
 {
     if (c.length !== 64 || P.length !== 64 || r.length !== 64) throw "geDoubleScalarmultBaseVartime: Invalid c, P or r input lengths!";
 
@@ -222,7 +222,7 @@ function geDoubleScalarmultBaseVartime(c, P, r)
 function commit(amount, mask)
 {
     if (!validHex(mask) || mask.length !== 64 || !validHex(amount) || amount.length !== 64) throw "invalid amount or mask!";
-    
+
     var C = geDoubleScalarmultBaseVartime(amount, H, mask);
     return C;
 }
@@ -234,7 +234,7 @@ function decodeRct(rv, i, der)
     var Ctmp = commit(ecdh.amount, ecdh.mask);
 
     if (Ctmp !== rv.outPk[i]) throw "mismatched commitments!";
-    
+
     ecdh.amount = s2d(ecdh.amount);
     return ecdh;
 }

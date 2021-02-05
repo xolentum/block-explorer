@@ -2,17 +2,17 @@
 
 ## About
 
-Block explorer for Xolentum, powered by the [PHP RPC library](https://github.com/xolentum/php-rpc/). 
+Block explorer for Xolentum. 
 
 ## Installing
 
-Clone the repository recursively. 
+Clone the repository. 
 
 ```
-git clone --recursive https://github.com/xolentum/block-explorer
+git clone https://github.com/xolentum/block-explorer
 ```
 
-Edit `api/lib/config.php` to match your daemon host. 
+Edit `config.js` and `config.php` to match your parameters. 
 
 ## License
 

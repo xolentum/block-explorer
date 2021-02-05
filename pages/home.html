@@ -1,673 +1,1440 @@
 <style>
-    #mem_pool_rows tr td:first-child {
-		text-align: left;
+    .card-action h2 {
+        font-size: 1.25rem;
+        margin: 0;
+    }
+
+    table.mempool-table {
+        width: 100%;
+        border-spacing: 0;
+    }
+
+    table.mempool-table th,
+    table.mempool-table td,
+    table.mempool-table tr,
+    table.mempool-table thead,
+    table.mempool-table tfoot
+    table.mempool-table tbody {
+        display: block;
+        text-align: center
+    }
+
+    table.mempool-table thead tr,
+    table.mempool-table tfoot tr {
+		/* fallback */
+		width: 97%;
+		/* minus scroll bar width */
+		width: -webkit-calc(100% - 16px);
+		width:    -moz-calc(100% - 16px);
+		width:         calc(100% - 16px);
 	}
-	.value {
-		color: #2780E3;
-		font-weight: 600;
+
+	table.mempool-table tr:after {
+		content: ' ';
 		display: block;
-		float: right;
+		visibility: hidden;
+		clear: both;
+	}
+
+	table.mempool-table tbody {
+		display: block;
+		max-height: 214px;
+		overflow-y: scroll;
+		overflow-x: hidden;
+	}
+
+	table.mempool-table thead th,
+	table.mempool-table tbody td,
+	table.mempool-table tfoot td {
+		width: 10%;
+		float: left;
+	}
+
+	table.mempool-table thead th:first-child,
+	table.mempool-table tbody td:first-child,
+	table.mempool-table tfoot td:first-child {
+		min-width: 20%;
+	}
+
+	table.mempool-table thead th:last-child,
+	table.mempool-table tbody td:last-child,
+	table.mempool-table tfoot td:last-child {
+		min-width: 40%;
+	}
+
+	td.date-time {
+		padding: 2px;
+		line-height: 90%;
+	}
+
+	table.mempool-table td.date-time {
+		padding-top: 10px;
+	}
+
+	table.mempool-table {
+		min-width: 1178px;
+	}
+
+    table.altblocks-table {
+    	width: 100%;
+		border-spacing: 0;
+	}
+
+	table.altblocks-table th,
+	table.altblocks-table td,
+	table.altblocks-table tr,
+	table.altblocks-table thead,
+	table.altblocks-table tfoot
+	table.altblocks-table tbody {
+		display: block;
+		text-align: center
+	}
+
+	table.altblocks-table thead tr,
+	table.altblocks-table tfoot tr {
+		/* fallback */
+		width: 97%;
+		/* minus scroll bar width */
+		width: -webkit-calc(100% - 16px);
+		width:    -moz-calc(100% - 16px);
+		width:         calc(100% - 16px);
+	}
+
+	table.altblocks-table tr:after {
+		content: ' ';
+		display: block;
+		visibility: hidden;
+		clear: both;
+	}
+
+	table.altblocks-table tbody {
+		display: block;
+		max-height: 214px;
+		overflow-y: scroll;
+		overflow-x: hidden;
+	}
+
+	table.altblocks-table thead th,
+	table.altblocks-table tbody td,
+	table.altblocks-table tfoot td {
+		width: 10%;
+		float: left;
+	}
+
+    table.altblocks-table thead th:nth-child(2),
+    table.altblocks-table tbody td:nth-child(2),
+	table.altblocks-table tfoot td:nth-child(2) {
+		min-width: 12%;
+	}
+
+	table.altblocks-table thead th:nth-child(3),
+	table.altblocks-table tbody td:nth-child(3),
+	table.altblocks-table tfoot td:nth-child(3) {
+		min-width: 48%;
+	}
+
+	td.date-time {
+		padding: 2px;
+		line-height: 90%;
+	}
+
+	table.altblocks-table td.date-time {
+		padding-top: 10px;
+	}
+
+	table.altblocks-table {
+		min-width: 1178px;
 	}
 </style>
 
+<div style="height: 10px; clear: both;"></div>
+
 <div class="row">
-	<div class="col-sm-12 col-md-12">
-		<div class="panel" id="network-stats">
-		  <div class="panel-heading">
-			<h3 class="panel-title"><i class="fa fa-tasks fa-fw" aria-hidden="true"></i> Stats</h3>
-		  </div>
-		  <div class="panel-body">
-			<div class="row">
-
-				<div class="col-sm-6 col-md-3">
-					<ul class="list-group" style="margin-bottom: 0px;">
-
-						<li class="list-group-item d-flex justify-content-between align-items-center" data-toggle="tooltip" data-placement="top" data-original-title="Blockchain height, total amount of blocks starting from zero."><i class="fa fa-list-ol"></i> Height: <span id="networkHeight" class="value"></span></li>
-
-						<li class="list-group-item d-flex justify-content-between align-items-center" data-toggle="tooltip" data-placement="top" data-original-title="The number of transactions in the network (excluding coinbase, i.e. reward for mined blocks)."><i class="fa fa fa-exchange"></i> Transactions: <span id="networkTransactions" class="value"></span></li>
-
-						<li class="list-group-item d-flex justify-content-between align-items-center" data-toggle="tooltip" data-placement="top" data-original-title="Current Base Reward (for last mined block)."><i class="fa fa-certificate"></i> Reward: <span id="currentReward" class="value"></span></li>
-
-					</ul>
+    <div class="col m4 l4 s12">
+		<ul class="collection hoverable">
+			<li class="collection-item">
+				Height: <span id="networkHeight" class="value light-blue-text text-darken-4"></span>
+			</li>
+			<li class="collection-item">
+				Difficulty: <span id="networkDifficulty" class="value light-blue-text text-darken-4"></span>
+			</li>
+			<li class="collection-item">
+				Transactions: <span id="networkTransactions" class="value light-blue-text text-darken-4"></span>
+			</li>
+		</ul>
+	</div>
+	<div class="col m4 l4 s12">
+		<ul class="collection hoverable">
+			<li class="collection-item">
+				Hashrate: <span id="networkHashrate" class="value light-blue-text text-darken-4"></span>
+			</li>
+			<li class="collection-item">
+				Est. T: <span id="blockSolveTime" class="value light-blue-text text-darken-4"></span>
+			</li>
+			<li class="collection-item">
+				Avg. T: <span id="avgSolveTime" class="value light-blue-text text-darken-4"></span>
+			</li>
+		</ul>
+	</div>
+	<div class="col m4 l4 s12">
+		<ul class="collection hoverable">
+			<li class="collection-item">
+				Supply: <span id="totalCoins" class="value light-blue-text text-darken-4">&infin;</span>
+			</li>
+			<li class="collection-item">
+				Circulating: <span class="value light-blue-text text-darken-4"><span id="circulatingCoins"></span></span>
+			</li>
+            <li class="collection-item">
+    			Last Reward: <span id="currentReward" class="value light-blue-text text-darken-4"></span>
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="row">
+	<div class="col m12 l12 s12">
+		<div class="card hoverable">
+			<div class="card-content">
+				<div class="d-flex align-items-center">
+					<div class="ml-auto">
+						<canvas id="difficultyChart" height="250"></canvas>
+					</div>
 				</div>
-				<div class="col-sm-6 col-md-3">
-					<ul class="list-group" style="margin-bottom: 0px;">
-
-						<li class="list-group-item d-flex justify-content-between align-items-center" data-toggle="tooltip" data-placement="top" data-original-title="Total Xolentum supply in circulation."><i class="fa fa-money"></i> Supply: <span class="value">∞</span></li>
-
-						<li class="list-group-item d-flex justify-content-between align-items-center" data-toggle="tooltip" data-placement="top" data-original-title="Total number of XOL already emitted."><i class="fa fa-university" aria-hidden="true"></i> Emission: <span id="emissionTotal" class="value"></span></li>
-
-						<li class="list-group-item d-flex justify-content-between align-items-center" data-toggle="tooltip" data-placement="top" data-original-title="Percentage of XOL already emitted."><i class="fa fa-university" aria-hidden="true"></i> Emission %: <span class="value">∞</span></li>
-
-					</ul>
-				</div>
-				<div class="col-sm-6 col-md-3">
-					<ul class="list-group" style="margin-bottom: 0px;">
-
-						<li class="list-group-item d-flex justify-content-between align-items-center" data-toggle="tooltip" data-placement="top" data-original-title="Difficulty for next block."><i class="fa fa-unlock-alt"></i> Next Difficulty: <span id="networkDifficulty" class="value"></span></li>
-
-						<li class="list-group-item d-flex justify-content-between align-items-center" data-toggle="tooltip" data-placement="top" data-original-title="Average difficulty by last 30 blocks."><i class="fa fa-lock"></i> Average Difficulty: <span id="avgDifficulty" class="value"></span></li>
-
-						<li class="list-group-item d-flex justify-content-between align-items-center" data-toggle="tooltip" data-placement="top" data-original-title="Current estimated network hash rate. Calculated by current difficulty."><i class="fa fa-tachometer"></i> Hash Rate: <span id="networkHashrate" class="value"></span></li>
-
-					</ul>
-				</div>
-				<div class="col-sm-6 col-md-3">
-					<ul class="list-group" style="margin-bottom: 0px;">
-
-						<li class="list-group-item d-flex justify-content-between align-items-center" data-toggle="tooltip" data-placement="top" data-original-title="Average estimated network hash rate. Calculated by average difficulty."><i class="fa fa-tachometer"></i> Avg. Hash Rate: <span id="avgHashrate" class="value"></span></li>
-
-						<li class="list-group-item d-flex justify-content-between align-items-center" data-toggle="tooltip" data-placement="top" data-original-title="Estimated block solve time at estimated network speed and current difficulty."><i class="fa fa-clock-o" aria-hidden="true"></i> Est. solve time: <span id="blockSolveTime" class="value"></span></li>
-
-						<li class="list-group-item d-flex justify-content-between align-items-center" data-toggle="tooltip" data-placement="top" data-original-title="Average solve time for the recent blocks listed below."><i class="fa fa-clock-o" aria-hidden="true"></i> Avg. solve time: <span id="avgSolveTime" class="value"></span></li>
-
-					</ul>
-				</div>
-
 			</div>
-		  </div>
 		</div>
 	</div>
 </div>
 
 <div class="row">
-	<div class="col-md-12">
-		<div class="panel">
-		  <div class="panel-heading">
-
-            <h3 class="panel-title"><i class="fa fa-area-chart" aria-hidden="true"></i> Charts
-			<span class="text-default" data-toggle="tooltip" data-placement="right" data-original-title="Difficulty based on last blocks from the list below. Block size, transactions count. Load more blocks to enlarge chart range."><i class="fa fa-question-circle"></i></span>
-            <button type="button" class="btn btn-default" id="loadMoreBlocks">Load More</button>
-            </h3>
-
-		  </div>
-		  <div class="panel-body chart-wrapper">
-			<canvas id="difficultyChart" height="210"></canvas>
-		  </div>
+	<div class="col s12">
+		<div class="card hoverable">
+			<div class="card-action grey lighten-5">
+				<h2 class="light-blue-text text-darken-4"><span class="tooltipped"
+					data-position="bottom" data-tooltip="Recent transactions waiting to be included into a block.">
+					<i class="fas fa-exchange-alt"></i> Transactions pool</span></h2>
+			</div>
+			<div class="card-content">
+				<div id="empty_mem_pool" style="display: none;">
+					<p>No pending transactions.</p>
+				</div>
+				<div id="mem_pool" style="display: block;">
+					<div class="row">
+						<div class="col s12 table-responsive">
+							<table class="highlight centered mempool-table" id="mem_pool_table">
+								<thead>
+									<tr>
+										<th><i class="far fa-clock"></i> Date &amp; time</th>
+										<th><i class="fas fa-donate"></i> Fee</th>
+										<th><i class="far fa-hdd"></i> Size</th>
+										<th><i class="fas fa-paw"></i> Hash</th>
+									</tr>
+								</thead>
+								<tbody id="mem_pool_rows"></tbody>
+								<tfoot>
+									<tr>
+										<td>
+											Total <span class="badge black-text" id="mempool_count"></span>
+										</td>
+										<td>
+											<span id="mempool_fees"></span>
+										</td>
+										<td>
+											<span id="mempool_sizes"></span>
+										</td>
+										<td>
+											<!-- empty cell for hash -->
+										</td>
+									</tr>
+								</tfoot>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
 
-<div class="panel">
-  <div class="panel-heading">
+<div class="row">
+	<div class="col s12">
+		<div class="card hoverable">
+			<div class="card-action grey lighten-5">
+				<h2 class="light-blue-text text-darken-4"><i class="fas fa-link"></i> Recent blocks</h2>
+				<a class="btn-floating btn-large halfway-fab waves-effect waves-light light-blue darken-1" id="loadMoreBlocks"><i class="material-icons">add</i></a>
+			</div>
 
-	<h3 class="panel-title"><i class="fa fa-exchange fa-fw" aria-hidden="true"></i> Transaction pool
-	<span class="text-default" data-toggle="tooltip" data-placement="right" data-original-title="Recent transactions waiting to be included into a block. Once it happens a transaction gets into the blockchain and becomes confirmed."><i class="fa fa-question-circle"></i></span>
-    </h3>
+			<div class="card-content">
+				<div class="row">
+					<div class="col l10 s12">
+						<a id="first-page" href="#" class="btn light-blue darken-3">
+							<i class="fa fa-step-backward" aria-hidden="true"></i>
+							First
+						</a>
+						<a id="prev-page" href="#" class="btn light-blue darken-3">
+							<i class="fa fa-backward" aria-hidden="true"></i>
+							Older
+						</a>
+						<div class="input-field inline">
+							<input id="goto-height" type="text" placeholder="Height">
+						</div>
+						<a id="goto-height-go" href="#" class="btn light-blue darken-3">Go</a>
+						<a id="next-page" href="#" class="btn light-blue darken-3 disabled">
+							Newer
+							<i class="fa fa-forward" aria-hidden="true"></i>
+						</a>
+						<a id="last-page" href="#" class="btn light-blue darken-3 disabled">
+							Last
+							<i class="fa fa-step-forward" aria-hidden="true"></i>
+						</a>
+					</div>
+					<div class="col l2 s12">
+						<div class="input-field col s12">
+							<select id="select_blocks_count">
+								<option value="10">10</option>
+								<option value="20" selected>20</option>
+								<option value="50">50</option>
+								<option value="100">100</option>
+							</select>
+							<label>Blocks per page</label>
+						</div>
+					</div>
+				</div>
+				<div class="table-responsive">
+					<table class="highlight centered">
+						<thead>
+							<tr>
+								<th><i class="fas fa-bars"></i> Height</th>
+								<th><i class="far fa-clock"></i> Date, time &amp; age</th>
+								<th><i class="fas fa-hourglass-end"></i> Lapse</th>
+								<th><i class="fas fa-paw"></i> Block hash</th>
+								<th><i class="far fa-hdd"></i> Size</th>
+								<th><i class="fas fa-unlock-alt"></i> Difficulty</th>
+								<th><i class="fas fa-exchange-alt"></i> Txs</th>
+							</tr>
+						</thead>
+						<tbody id="blocks_rows">
 
-  </div>
-  <div class="panel-body">
-
-		<div class="table-responsive">
-			<table class="table table-hover" id="mem_pool_table">
-				<thead>
-				<tr>
-					<th width="30%"><i class="fa fa-clock-o"></i> Date &amp; Time</th>
-					<th width="40%"><i class="fa fa-paw"></i> Hash</th>
-				</tr>
-				</thead>
-				<tbody id="mem_pool_rows">
-
-				</tbody>
-			</table>
+						</tbody>
+					</table>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
 
+<div class="row">
+	<div class="col s12">
+		<div class="card hoverable">
+			<div class="card-action grey lighten-5">
+				<h2 class="light-blue-text text-darken-4"><span class="tooltipped"
+					data-position="bottom" data-tooltip="Alternative blocks stored in node's memory.">
+					<i class="fas fa-share-alt"></i> Alt. blocks</span></h2>
+			</div>
+			<div class="card-content">
+				<div id="empty_alt_blocks" style="display: none;">
+					<p>No alt. blocks.</p>
+				</div>
+				<div id="alt_blocks" style="display: block;">
+					<div class="row">
+						<div class="col s12 table-responsive">
+							<table class="highlight centered altblocks-table" id="alt_blocks_table">
+								<thead>
+									<tr>
+										<th><i class="fas fa-bars"></i> Height</th>
+										<th><i class="far fa-clock"></i> Date, time &amp; age</th>
+										<th><i class="fas fa-paw"></i> Block hash</th>
+										<th><i class="far fa-hdd"></i> Size</th>
+										<th><i class="fas fa-unlock-alt"></i> Difficulty</th>
+										<th><i class="fas fa-exchange-alt"></i> Txs</th>
+									</tr>
+								</thead>
+								<tbody id="alt_blocks_rows">
 
-<div class="panel">
-  <div class="panel-heading">
-	<h3 class="panel-title"><i class="fa fa-chain fa-fw" aria-hidden="true"></i> Recent blocks</h3>
-  </div>
-  <div class="panel-body">
-	<div class="row">
-		<div class="col-sm-8 col-md-6 col-lg-5">
-			<div class="input-group">
-				<a id="prev-page" href="#" class="btn btn-default input-group-addon"><i class="fa fa-arrow-left" aria-hidden="true"></i> Older</a>
-				<span class="input-group-addon">№</span>
-				<input id="goto-height" type="text" class="form-control" placeholder="Height">
-				<a id="goto-height-go" href="#" class="btn btn-default input-group-addon">Go</a>
-                <a id="next-page" href="#" class="btn btn-default input-group-addon disabled">Newer <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
-            </div>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
-
-	<div class="table-responsive">
-		<table class="table table-hover">
-			<thead>
-			<tr>
-				<th><i class="fa fa-bars"></i> Height</th>
-				<th><i class="fa fa-clock-o"></i> Date &amp; time</th>
-				<th><i class="fa fa-archive"></i> Size</th>
-				<th><i class="fa fa-paw"></i> Block Hash</th>
-				<th><i class="fa fa-unlock-alt"></i> Difficulty</th>
-				<th><i class="fa fa fa-exchange"></i> Txs</th>
-			</tr>
-			</thead>
-			<tbody id="blocks_rows">
-
-			</tbody>
-		</table>
-	</div>
-
-	<p class="text-center">
-		<button type="button" class="btn btn-default" id="loadMoreBlocks">Load More</button>
-	</p>
-
-  </div>
 </div>
+
 <script>
-var block,
-    chartDataSetDiff = [],
-    Difficulties = [],
-    Blocks = [],
-    time_stamps = [],
-    diffChart,
-    refresh = true,
-    options;
+	var block,
+		Difficulties = [],
+		Blocks = [],
+		Rewards = [],
+		Txses = [],
+		Sizes = [],
+		DateTimes = [],
+		Timestamps = [],
+		Solvetimes = [],
+		diffChart,
+		alt_blocks,
+		refresh = true;
 
-currentPage = {
-    destroy: function () {
-        if (xhrGetBlocks) xhrGetBlocks.abort();
-    },
-    init: function () {
-        setTimeout(function () {
-            $.when(
-                displayDiffChart()
-            ).then(function () {
-                setTimeout(function () {
-                    refreshChart();
-                }, 100)
-            });
-        }, 500)
-    },
-    update: function () {
-        renderLastBlock();
-        updateText('networkHeight', lastStats.height);
-        updateText('networkTransactions', lastStats.tx_count);
-        updateText('networkHashrate', getReadableHashRateString(lastStats.difficulty / blockTargetInterval));
-        updateText('networkDifficulty', getReadableDifficultyString(lastStats.difficulty, 2));
-        $("time.timeago").timeago();
-        getPoolTransactions();
-        var currHeight = $('#blocks_rows').children().first().data('height');
-        if (refresh) {
-            $.when(
-                renderInitialBlocks()
-            ).then(function () {
-                setTimeout(function () {
-                    refreshChart();
-                }, 100)
-            });
-        }
-        if ((currHeight + 31) < lastStats.height) {
-            $('#next-page').removeClass('disabled');
-        }
-    }
-};
+	var coinsInCirculation;
+	var lastBaseReward;
 
-function renderLastBlock() {
-    $.ajax({
-        url: './api/getlastblockheader.php',
-        method: "GET",
-        dataType: 'json',
-        cache: 'false',
-        success: function (data) {
-            lastBlockReward = data.result.block_header.reward;
-            $.ajax({
-                url: './api/getgeneratedcoins.php',
-                dataType: 'json',
-                cache: 'false',
-                success: function (data) {
-                    generatedCoins = data.result.coins;
-                    updateText('totalCoins', getReadableCoins(coinTotal, 2));
-                    updateText('emissionTotal', getReadableCoins(generatedCoins, 2));
-                    updateText('emissionPercent', (generatedCoins / coinTotal * 100).toFixed(2) + "%");
-                    updateText('currentReward', getReadableCoins(lastBlockReward, 4));
-                }
-            });
-        }
-    });
-}
+	$(document).ready(function(){
+		$('select').formSelect();
+	});
 
-var xhrGetBlocks;
-function loadMoreBlocks_Click()
-{
-    if (xhrGetBlocks) xhrGetBlocks.abort();
-    height = $('#blocks_rows').children().last().data('height')
-    xhrGetBlocks = $.ajax({
-        url: './api/getblockheadersrange.php?start=' + (height - pageDisplay) + '&end=' + height,
-        dataType: 'json',
-        cache: 'false',
-        success: function (data) {
-            $.when(
-                renderBlocks(data.result.headers)
-            ).then(function () {
-                setTimeout(function () {
-                    loadMoreChart();
-                }, 100)
-            });
-        }
-    });
-}
+	currentPage = {
+		destroy: function () {
+			if (xhrGetBlocks) xhrGetBlocks.abort();
+		},
+		init: function () {
+			renderLastStats();
+            getPoolTransactions();
+			$("#count_val").text(blocksPerPage);
+			$.when(
+				renderInitialBlocks()
+			).then(function () {
+				$.when(
+					displayDiffChart()
+				).then(function () {
+					setTimeout(function () {
+						refreshChart();
+						var currHeight = $('#blocks_rows').children().first().data(
+							'height');
+						if (currHeight + blocksPerPage >= lastStats.height) {
+							$('#next-page').addClass('disabled');
+							$('#last-page').addClass('disabled');
+							$('#loadMoreBlocks').removeClass('disabled');
+						} else {
+							$('#next-page').removeClass('disabled');
+							$('#last-page').removeClass('disabled');
+						}
+						if (currHeight - blocksPerPage <= 0) {
+							$('#prev-page').addClass('disabled');
+							$('#first-page').addClass('disabled');
+							$('#loadMoreBlocks').addClass('disabled');
+						}
+					}, 100)
+				})
+			});
+			getAltBlocks();
+			alt_blocks = lastStats.alt_blocks_count;
+		},
+		update: function () {
+			renderLastStats();
+			$("time.timeago").timeago();
+			getPoolTransactions();
+			var currHeight = $('#blocks_rows').children().first().data('height');
+			if (refresh) {
+				$.when(
+					renderInitialBlocks()
+				).then(function () {
+					refreshChart();
+					$('.tooltipped').tooltip();
+				});
+			}
+			if (currHeight + blocksPerPage < lastStats.height) {
+				$('#next-page').removeClass('disabled');
+				$('#last-page').removeClass('disabled');
+			}
 
-function prevPage_Click(e)
-{
-    refresh = false;
-    if (xhrGetBlocks) xhrGetBlocks.abort();
+			if (alt_blocks !== lastStats.alt_blocks_count) {
+				getAltBlocks();
+				alt_blocks = lastStats.alt_blocks_count;
+			}
+		}
+	};
 
-    var endHeight = $('#blocks_rows').children().last().data('height') - 1;
-    var startHeight = endHeight - pageDisplay;
-
-    if (startHeight < 0)
-        startHeight = 0;
-
-    if (startHeight <= 0)
-        $('#prev-page').addClass('disabled');
-    else
-        $('#prev-page').removeClass('disabled');
-
-    $('#next-page').removeClass('disabled');
-
-    xhrGetBlocks = $.ajax({
-        url: './api/getblockheadersrange.php?start=' + startHeight + '&end=' + endHeight,
-        dataType: 'json',
-        cache: 'false',
-        success: function (data) {
-            $('#blocks_rows').children().remove();
-            $.when(
-                renderBlocks(data.result.headers)
-            ).then(function () {
-                setTimeout(function () {
-                    refreshChart();
-                }, 100)
-            });
-        }
-    });
-    e.preventDefault();
-}
-
-function nextPage_Click(e)
-{
-    refresh = false;
-    if (xhrGetBlocks) xhrGetBlocks.abort();
-    var startHeight = $('#blocks_rows').children().first().data('height') + 1;
-    var endHeight = startHeight + pageDisplay;
-
-    if (endHeight > lastStats.height - 1)
-    {
-        endHeight = lastStats.height - 1;
-        startHeight = endHeight - pageDisplay;
-    }
-
-    if (endHeight >= lastStats.height - 1)
-        $('#next-page').addClass('disabled');
-    else
-        $('#next-page').removeClass('disabled');
-
-    $('#prev-page').removeClass('disabled');
-
-    xhrGetBlocks = $.ajax({
-        url: './api/getblockheadersrange.php?start=' + startHeight + '&end=' + endHeight,
-        dataType: 'json',
-        cache: 'false',
-        success: function (data) {
-            $('#blocks_rows').children().remove();
-            $.when(
-                renderBlocks(data.result.headers)
-            ).then(function () {
-                setTimeout(function () {
-                    refreshChart();
-                }, 100)
-            });
-        }
-    });
-    e.preventDefault();
-};
-
-function gotoHeightGo_Click() {
-    var height = document.getElementById('goto-height').value;
-    var newUrl = "/?height=" + height;
-    window.location = newUrl;
-};
-
-function renderInitialBlocks() {
-    if (xhrGetBlocks) xhrGetBlocks.abort();
-
-    var loadHeight;
-
-    if (urlParam('height'))
-        loadHeight = parseInt(urlParam('height'));
-    else
-        loadHeight = lastStats.height - 1;
-
-    var endHeight = loadHeight;
-    var startHeight = endHeight - pageDisplay;
-
-    if (endHeight > lastStats.height - 1)
-    {
-        endHeight = lastStats.height - 1;
-        startHeight = endHeight - pageDisplay;
-    }
-
-    if (startHeight < 0)
-        startHeight = 0;
-
-    if (startHeight <= 0)
-        $('#prev-page').addClass('disabled');
-    else
-        $('#prev-page').removeClass('disabled');
-
-    if (endHeight >= lastStats.height - 1)
-        $('#next-page').addClass('disabled');
-    else
-        $('#next-page').removeClass('disabled');
-
-    xhrGetBlocks = $.ajax({
-        url: './api/getblockheadersrange.php?start=' + startHeight + '&end=' + endHeight,
-        dataType: 'json',
-        cache: 'false',
-        success: function (data) {
-            renderBlocks(data.result.headers);
-        }
-    });
-};
-
-function getBlockRowElement(block, jsonString) {
-
-    var row = document.createElement('tr');
-    row.setAttribute('data-json', jsonString);
-    row.setAttribute('data-height', block.height);
-    row.setAttribute('id', 'blockRow' + block.height);
-    row.setAttribute('title', block.hash);
-    var dateTime = new Date(block.timestamp * 1000).toISOString();
-    row.setAttribute('data-dt', dateTime);
-    var columns =
-        '<td>' + block.height + '</td>' +
-        '<td class="date-time">' + formatDate(block.timestamp) + ' (<time class="timeago" datetime="' + dateTime + '"></time>)</td>' +
-        '<td>' + formatBytes(parseInt(block.block_size)) + '</td>' +
-        '<td>' + formatBlockLink(block.hash) + '</td>' +
-        '<td class="blk-diff">' + block.difficulty + '</td>' +
-        '<td>' + block.num_txes + '</td>';
-
-    Difficulties.push(parseInt(block.difficulty));
-    time_stamps.push(block.timestamp);
-
-    chartDataSetDiff.push({
-        x: block.heigh,
-        y: (block.difficulty / blockTargetInterval) / 1000.0
-    });
-
-    row.innerHTML = columns;
-
-    return row;
-}
-
-function renderBlocks(blocksResults)
-{
-    if (!blocksResults)
-        return;
-
-    var $blocksRows = $('#blocks_rows');
-
-    for (var i = 0; i < blocksResults.length; i++) {
-
-        var block = blocksResults[i];
-
-        var blockJson = JSON.stringify(block);
-
-        var existingRow = document.getElementById('blockRow' + block.height);
-
-        if (existingRow && existingRow.getAttribute('data-json') !== blockJson) {
-            $(existingRow).replaceWith(getBlockRowElement(block, blockJson));
-        }
-        else if (!existingRow) {
-
-            var blockElement = getBlockRowElement(block, blockJson);
-
-            var inserted = false;
-            var rows = $blocksRows.children().get();
-            for (var f = 0; f < rows.length; f++) {
-                var bHeight = parseInt(rows[f].getAttribute('data-height'));
-                if (bHeight < block.height) {
-                    inserted = true;
-                    $(rows[f]).before(blockElement);
-                    break;
-                }
+	function renderLastStats() {
+        $.ajax({
+            url: api + '/json_rpc',
+        	method: "POST",
+			data: JSON.stringify({
+				jsonrpc: "2.0",
+				id: "explorer_last_block_header",
+				method: "get_last_block_header",
+			}),
+            dataType: 'json',
+            cache: 'false',
+            success: function (data) {
+                lastBlockReward = data.result.block_header.reward;
+                $.ajax({
+                    url: api + '/json_rpc',
+        	        method: "POST",
+			        data: JSON.stringify({
+				        jsonrpc: "2.0",
+				        id: "explorer_get_generated_coins",
+				        method: "get_generated_coins",
+			        }),
+                    dataType: 'json',
+                    cache: 'false',
+                    success: function (data) {
+                        generatedCoins = data.result.coins;
+                        updateText('circulatingCoins', getReadableCoins(generatedCoins, 2));
+                        updateText('currentReward', getReadableCoins(lastBlockReward, 4));
+                    }
+                });
             }
-            if (!inserted) {
-                $blocksRows.append(blockElement);
-            }
-        }
-    }
-    $("time.timeago").timeago();
-    calcAvgHashRate();
-    calcAvgSolveTime();
-}
-
-function calcAvgHashRate()
-{
-    if (!Difficulties)
-        return;
-
-    var sum = Difficulties.reduce(add, 0);
-    function add(a, b) {
-        return a + b;
-    }
-    var avgDiff = Math.round(sum / Difficulties.length);
-    var avgHashRate = avgDiff / blockTargetInterval;
-
-    updateText('avgDifficulty', getReadableDifficultyString(avgDiff, 2));
-    updateText('avgHashrate', getReadableHashRateString(avgDiff / blockTargetInterval));
-    updateText('blockSolveTime', getReadableTime(lastStats.difficulty / avgHashRate));
-}
-
-function calcAvgSolveTime()
-{
-    if (!time_stamps)
-        return;
-
-    ts = time_stamps.concat([]);
-    ts.sort();
-    var avg_solve_time = 0;
-    var solveTime = 0;
-    for (var i = 1; i < ts.length; i++) {
-        solveTime += ts[i] - ts[i - 1];
-    }
-    avg_solve_time = solveTime / (ts.length - 1);
-    updateText('avgSolveTime', getReadableTime(avg_solve_time));
-}
-
-function getPoolTransactions()
-{
-    var xhrGetPool = $.ajax({
-        url: './api/gettransactionpool.php',
-        cache: 'false',
-        success: function (data)
-        {
-            var json = data;
-            var transactions = json.transactions;
-
-            if (transactions)
-            {
-                transactions.sort(function(a, b){return a.receive_time - b.receive_time});
-
-                var txsRows = document.getElementById('mem_pool_rows');
-                if (txsRows)
-                    while (txsRows.firstChild)
-                        txsRows.removeChild(txsRows.firstChild);
-
-                for (var i = 0; i < transactions.length; i++)
-                {
-                    var tx = transactions[i];
-
-                    var row = document.createElement('tr');
-                    var columns =
-                        '<td>' + formatDate(tx.receive_time) + ' (<span class="mtx-ago"></span>)' + '</td>' +
-                        '<td>' + formatPaymentLink(tx.id_hash) + '</td>';
-                    row.innerHTML = columns;
-                    $(txsRows).append(row);
-                    $(row).find('.mtx-ago').timeago('update', new Date(tx.receive_time * 1000).toISOString());
-                }
-            }
-        }
-    });
-}
-
-// Difficulty chart
-function displayDiffChart() {
-    var ctx = document.getElementById("difficultyChart");
-    var chartData = {
-        datasets: [{
-            data: chartDataSetDiff,
-            yAxisID: "diff",
-            label: "Hashrate",
-            backgroundColor: "rgba(220,220,220,0.2)",
-            borderColor: '#2FA4E7',
-            borderWidth: 2,
-            pointColor: "#2FA4E7",
-            pointBorderColor: "#2FA4E7",
-            pointHighlightFill: "#2FA4E7",
-            pointBackgroundColor: "#2FA4E7",
-            pointBorderWidth: 2,
-            pointRadius: 1,
-            pointHoverRadius: 3,
-            pointHitRadius: 20,
-            type: 'line'
-        }]
-    };
-    var options = {
-        responsive: true,
-        maintainAspectRatio: false,
-        elements: {
-            line: {
-                tension: 0
-            }
-        },
-        title: {
-            display: false
-        },
-        legend: {
-            display: false
-        },
-        scales: {
-            yAxes: [{
-                type: 'linear',
-                id: "diff",
-                distribution: 'linear',
-                position: 'left',
-                scaleLabel: {
-                    display: true,
-                    labelString: 'NetHash (Kh/s)'
-                },
-                gridLines: {
-                    lineWidth: 1,
-                    display: true
-                },
-                ticks: {
-                    fontSize: 9,
-                    display: true
-                },
-                display: true
-            }],
-            xAxes: [
-                {
-                    type: 'linear',
-                    distribution: 'linear',
-                    position: 'left',
-                    scaleLabel: {
-                        display: false,
-                        labelString: 'Height'
-                    },
-                    gridLines: {
-                        display: false
-                    },
-                    ticks: {
-                        fontSize: 9,
-                        display: false,
-                        stepSize: 1
-                    },
-                    display: true
-                }]
-        }
-    };
-
-    if (!chartData || !options)
-        return;
-
-    diffChart = new Chart(ctx, {
-        type: 'line',
-        data: chartData,
-        options: options
-    });
-}
-
-function refreshChart() {
-    var brows = $('#blocks_rows').children(),
-        chartDataSetDiff = [];
-
-    if (!brows)
-        return;
-
-    for (var i = 0; i < brows.length; i++) {
-        var row = $(brows[i]);
-        chartDataSetDiff.push({
-            x: parseInt(row.data("json").height),
-            y: (parseInt(row.data("json").difficulty) / blockTargetInterval) / 1000.0
         });
+
+		updateText('networkHeight', lastStats.height.toString());
+		updateText('networkTransactions', lastStats.tx_count.toString());
+		updateText('networkDifficulty', getReadableDifficultyString(lastStats.difficulty, 2).toString());
+		updateText('networkHashrate', getReadableHashRateString(lastStats.difficulty / blockTargetInterval));
+	}
+
+	var xhrGetBlocks;
+	$('#loadMoreBlocks').click(function () {
+		if (xhrGetBlocks) xhrGetBlocks.abort();
+		xhrGetBlocks = $.ajax({
+			url: api + '/json_rpc',
+			method: "POST",
+			data: JSON.stringify({
+				jsonrpc: "2.0",
+				id: "explorer_blocks_list",
+				method: "get_block_headers_range",
+				params: {
+					start_height: $('#blocks_rows').children().last().data('height') - blocksPerPage,
+					end_height: $('#blocks_rows').children().first().data('height') + 1
+				}
+			}),
+			dataType: 'json',
+			cache: 'false',
+			success: function (data) {
+				$.when(
+					renderBlocks(data.result.headers)
+				).then(function () {
+					var currHeight = $('#blocks_rows').children().last().data('height');
+					if (currHeight === 0) {
+						$('#loadMoreBlocks').toggleClass('disabled');
+					}
+					setTimeout(function () {
+						loadMoreChart();
+					}, 100)
+				});
+			}
+		});
+	});
+
+	$('#prev-page').click(function (e) {
+		refresh = false;
+		clearArrays();
+		if (xhrGetBlocks) xhrGetBlocks.abort();
+		var currHeight = $('#blocks_rows').children().first().data('height');
+		var openHeight = (currHeight - blocksPerPage <= 0) ? blocksPerPage : currHeight - blocksPerPage;
+
+		xhrGetBlocks = $.ajax({
+			url: api + '/json_rpc',
+			method: "POST",
+			data: JSON.stringify({
+				jsonrpc: "2.0",
+				id: "explorer_prev_nav",
+				method: "get_block_headers_range",
+				params: {
+					start_height: openHeight - blocksPerPage + 1,
+					end_height: openHeight + 1
+				}
+			}),
+			dataType: 'json',
+			cache: 'false',
+			success: function (data) {
+				$('#blocks_rows').children().remove();
+				$.when(
+					renderBlocks(data.result.headers)
+				).then(function () {
+					setTimeout(function () {
+						refreshChart();
+					}, 100)
+				});
+			}
+		});
+		e.preventDefault();
+
+		if (currHeight + blocksPerPage >= lastStats.height) {
+			$('#next-page').removeClass('disabled');
+			$('#last-page').removeClass('disabled');
+			$('#loadMoreBlocks').removeClass('disabled');
+		}
+		if (currHeight - blocksPerPage * 2 <= 0) {
+			$('#prev-page').addClass('disabled');
+			$('#first-page').addClass('disabled');
+			$('#loadMoreBlocks').addClass('disabled');
+		}
+	});
+
+	$('#next-page').click(function (e) {
+		refresh = false;
+		clearArrays();
+		if (xhrGetBlocks) xhrGetBlocks.abort();
+		var currHeight = $('#blocks_rows').children().first().data('height');
+		var openHeight = (currHeight + blocksPerPage > lastStats.height) ? lastStats
+			.height - 1: currHeight + blocksPerPage + 1;
+
+		xhrGetBlocks = $.ajax({
+			url: api + '/json_rpc',
+			method: "POST",
+			data: JSON.stringify({
+				jsonrpc: "2.0",
+				id: "explorer_next_nav",
+				method: "get_block_headers_range",
+				params: {
+					start_height: openHeight - blocksPerPage,
+					end_height: openHeight
+				}
+			}),
+			dataType: 'json',
+			cache: 'false',
+			success: function (data) {
+				$('#blocks_rows').children().remove();
+				$.when(
+					renderBlocks(data.result.headers)
+				).then(function () {
+					setTimeout(function () {
+						refreshChart();
+					}, 100)
+				});
+			}
+		});
+		e.preventDefault();
+
+		if ((currHeight + blocksPerPage) >= lastStats.height) {
+			$('#next-page').addClass('disabled');
+			$('#last-page').addClass('disabled');
+			refresh = true;
+		}
+
+		if (!(currHeight + $('#blocks_rows').size() - blocksPerPage <= 0)) {
+			$('#loadMoreBlocks').removeClass('disabled');
+		}
+
+		$('#prev-page').removeClass('disabled');
+		$('#first-page').removeClass('disabled');
+
+	});
+
+	$('#first-page').click(function (e) {
+		refresh = false;
+		clearArrays();
+		if (xhrGetBlocks) xhrGetBlocks.abort();
+		xhrGetBlocks = $.ajax({
+			url: api + '/json_rpc',
+			method: "POST",
+			data: JSON.stringify({
+				jsonrpc: "2.0",
+				id: "explorer_first_nav",
+				method: "get_block_headers_range",
+				params: {
+					start_height: 1,
+					end_height: blocksPerPage
+				}
+			}),
+			dataType: 'json',
+			cache: 'false',
+			success: function (data) {
+				$('#blocks_rows').children().remove();
+				$.when(
+					renderBlocks(data.result.headers)
+				).then(function () {
+					setTimeout(function () {
+						refreshChart();
+					}, 100)
+				});
+			}
+		});
+		e.preventDefault();
+
+		$('#next-page').removeClass('disabled');
+		$('#last-page').removeClass('disabled');
+		$('#prev-page').addClass('disabled');
+		$('#first-page').addClass('disabled');
+		$('#loadMoreBlocks').addClass('disabled');
+	});
+
+	$('#last-page').click(function (e) {
+		refresh = true;
+		clearArrays();
+		if (xhrGetBlocks) xhrGetBlocks.abort();
+		xhrGetBlocks = $.ajax({
+			url: api + '/json_rpc',
+			method: "POST",
+			data: JSON.stringify({
+				jsonrpc: "2.0",
+				id: "explorer_last_nav",
+				method: "get_block_headers_range",
+				params: {
+					start_height: lastStats.height - 1 - blocksPerPage,
+					end_height: lastStats.height - 1
+				}
+			}),
+			dataType: 'json',
+			cache: 'false',
+			success: function (data) {
+				$('#blocks_rows').children().remove();
+				$.when(
+					renderBlocks(data.result.headers)
+				).then(function () {
+					setTimeout(function () {
+						refreshChart();
+					}, 100)
+				});
+			}
+		});
+		e.preventDefault();
+
+		$('#next-page').addClass('disabled');
+		$('#last-page').addClass('disabled');
+		$('#prev-page').removeClass('disabled');
+		$('#first-page').removeClass('disabled');
+		$('#loadMoreBlocks').removeClass('disabled');
+	});
+
+	$('#goto-height-go').click(function (e) {
+		var gotoHeight = parseInt(document.getElementById('goto-height').value);
+		clearArrays();
+
+		if (xhrGetBlocks) xhrGetBlocks.abort();
+		xhrGetBlocks = $.ajax({
+			url: api + '/json_rpc',
+			method: "POST",
+			data: JSON.stringify({
+				jsonrpc: "2.0",
+				id: "explorer_goto_height",
+				method: "get_block_headers_range",
+				params: {
+					start_height: gotoHeight - blocksPerPage + 1,
+					end_height: gotoHeight + 1
+				}
+			}),
+			dataType: 'json',
+			cache: 'false',
+			success: function (data) {
+				$('#blocks_rows').children().remove();
+				$.when(
+					renderBlocks(data.result.headers)
+				).then(function () {
+					setTimeout(function () {
+						refreshChart();
+						var currHeight = $('#blocks_rows').children().first().data(
+						'height');
+						if (currHeight + blocksPerPage >= lastStats.height) {
+							$('#next-page').addClass('disabled');
+							$('#last-page').addClass('disabled');
+							$('#loadMoreBlocks').removeClass('disabled');
+							refresh = true;
+						} else {
+							$('#next-page').removeClass('disabled');
+							$('#last-page').removeClass('disabled');
+							refresh = false;
+						}
+						if (currHeight - blocksPerPage <= 0) {
+							$('#prev-page').addClass('disabled');
+							$('#first-page').addClass('disabled');
+							$('#loadMoreBlocks').addClass('disabled');
+							refresh = false;
+						}
+					}, 100)
+				});
+			}
+		});
+
+		e.preventDefault();
+	});
+
+	$('#goto-height').keyup(function (e) {
+		if (e.keyCode === 13)
+			$('#goto-height-go').click();
+	});
+
+	$("#select_blocks_count").on('change', function (e) {
+		clearArrays();
+		blocksPerPage = parseInt(e.target.value);
+		var currHeight = $('#blocks_rows').children().first().data('height');
+		if (xhrGetBlocks) xhrGetBlocks.abort();
+		xhrGetBlocks = $.ajax({
+			url: api + '/json_rpc',
+			method: "POST",
+			data: JSON.stringify({
+				jsonrpc: "2.0",
+				id: "explorer_block_count",
+				method: "get_block_headers_range",
+				params: {
+					start_height: currHeight - blocksPerPage,
+					end_height: currHeight + 1
+				}
+			}),
+			dataType: 'json',
+			cache: 'false',
+			success: function (data) {
+				$('#blocks_rows').children().remove();
+				$.when(
+					renderBlocks(data.result.headers)
+				).then(function () {
+					setTimeout(function () {
+						refreshChart();
+					}, 100)
+				});
+			}
+		});
+
+		if (currHeight + blocksPerPage >= lastStats.height) {
+			$('#next-page').addClass('disabled');
+			$('#last-page').addClass('disabled');
+		} else {
+			$('#next-page').removeClass('disabled');
+			$('#last-page').removeClass('disabled');
+			refresh = false;
+		}
+		$('#prev-page').removeClass('disabled');
+		$('#first-page').removeClass('disabled');
+		$('#loadMoreBlocks').removeClass('disabled');
+		if (currHeight - blocksPerPage <= 0) {
+			$('#prev-page').addClass('disabled');
+			$('#first-page').addClass('disabled');
+			$('#loadMoreBlocks').addClass('disabled');
+		}
+	});
+
+	function clearArrays() {
+		Difficulties = [];
+		Blocks = [];
+		Rewards = [];
+		Txses = [];
+		Sizes = [];
+		DateTimes = [];
+		Timestamps = [];
+		Solvetimes = [];
+	}
+
+	function renderInitialBlocks() {
+		var loadHeight;
+		if (urlParam('height'))
+			loadHeight = parseInt(urlParam('height'));
+		else
+			loadHeight = lastStats.height - 1;
+
+		if ((loadHeight - blocksPerPage) < 0) {
+			$('#prev-page').addClass('disabled');
+			$('#next-page').removeClass('disabled');
+		}
+
+		return $.ajax({
+			url: api + '/json_rpc',
+			method: "POST",
+			data: JSON.stringify({
+				jsonrpc: "2.0",
+				id: "explorer_init_blocks",
+				method: "get_block_headers_range",
+				params: {
+					start_height: loadHeight - blocksPerPage,
+					end_height: loadHeight
+				}
+			}),
+			dataType: 'json',
+			cache: 'false',
+			success: function (data) {
+				renderBlocks(data.result.headers);
+			}
+		});
+	};
+
+	function getBlockRowElement(block, jsonString) {
+		var row = document.createElement('tr');
+		row.setAttribute('data-json', jsonString);
+		row.setAttribute('data-height', block.height);
+		row.setAttribute('id', 'blockRow' + block.height);
+		row.setAttribute('title', block.hash);
+		var dateTime = block.timestamp === 0 ? new Date(1464595200 * 1000).toISOString() : new Date(block.timestamp * 1000)
+			.toISOString(); // quirk not to show 1970 and freeze chart because in genesis tx there's 0 instead of timestamp
+		row.setAttribute('data-dt', dateTime);
+		row.setAttribute('data-min-fee', parseFloat(getReadableCoins(block.min_fee, 6, false)));
+		var columns =
+			'<td>' + block.height + '</td>' +
+			'<td class="date-time">' + formatDate(block.timestamp) + '<br />(<time class="timeago" datetime="' + dateTime + '"></time>)</td>' +
+			'<td class"solvetime">' + formatTime(block.solvetime) + '</td>' +
+			'<td>' + formatBlockLink(block.hash) + '</td>' +
+			'<td>' + formatBytes(parseInt(block.block_size)) + '</td>' +
+			'<td class="blk-diff">' + block.difficulty + '</td>' +
+			'<td>' + block.num_txes + '</td>';
+
+		Difficulties.push(parseInt(block.difficulty));
+		Blocks.push(parseInt(block.height));
+		Txses.push(parseInt(block.num_txes));
+		Sizes.push(parseInt(block.block_size));
+		DateTimes.push(dateTime);
+		Timestamps.push(block.timestamp);
+
+		row.innerHTML = columns;
+
+		return row;
+	}
+
+	function renderBlocks(blocksResults) {
+		var $blocksRows = $('#blocks_rows');
+		for (var i = 0; i < blocksPerPage; i++) {
+            Solvetimes.push(Math.abs(blocksResults[i].timestamp - blocksResults[i + 1].timestamp));
+            var block = blocksResults[i];
+			block.solvetime = Math.abs(blocksResults[i].timestamp - blocksResults[i + 1].timestamp);
+			var blockJson = JSON.stringify(block);
+			var existingRow = document.getElementById('blockRow' + block.height);
+			if (existingRow && existingRow.getAttribute('data-json') !== blockJson) {
+				$(existingRow).replaceWith(getBlockRowElement(block, blockJson));
+			} else if (!existingRow) {
+				var blockElement = getBlockRowElement(block, blockJson);
+				var inserted = false;
+				var rows = $blocksRows.children().get();
+				for (var f = 0; f < rows.length; f++) {
+					var bHeight = parseInt(rows[f].getAttribute('data-height'));
+					if (bHeight < block.height) {
+						inserted = true;
+						$(rows[f]).before(blockElement);
+						break;
+					}
+				}
+				if (!inserted) {
+					$blocksRows.append(blockElement);
+				}
+			}
+		}
+		$("time.timeago").timeago();
+		calcAvgHashRate();
+		calcAvgSolveTime();
+	}
+
+	function getAltBlocks() {
+		return $.ajax({
+			url: api + '/get_alt_blocks_hashes',
+            method: "GET",
+			dataType: 'json',
+			cache: 'false',
+			success: function (data) {
+                renderAltBlocks(data.blks_hashes);
+
+				if (data.blks_hashes.length == 0) {
+					$('#alt_blocks').hide();
+					$('#empty_alt_blocks').show();
+				} else {
+					$('#alt_blocks').show();
+					$('#empty_alt_blocks').hide();
+				}
+			}
+		});
+	};
+
+
+	function getAltBlockRowElement(block, jsonString) {
+		var row = document.createElement('tr');
+		row.setAttribute('data-json', jsonString);
+		row.setAttribute('data-height', block.height);
+		row.setAttribute('id', 'altBlockRow_' + block.height);
+		row.setAttribute('title', block.hash);
+		var dateTime = block.timestamp === 0 ? new Date(1464595200 * 1000).toISOString() : new Date(block.timestamp * 1000)
+			.toISOString(); // quirk not to show 1970 and freeze chart because in genesis tx there's 0 instead of timestamp
+		row.setAttribute('data-dt', dateTime);
+		var columns =
+			'<td>' + block.height + '</td>' +
+			'<td class="date-time">' + formatDate(block.timestamp) + '<br />(<time class="timeago" datetime="' + dateTime + '"></time>)</td>' +
+			'<td>' + formatBlockLink(block.hash) + '</td>' +
+			'<td>' + formatBytes(parseInt(block.block_size)) + '</td>' +
+			'<td class="blk-diff">' + block.difficulty + '</td>' +
+			'<td>' + block.num_txes + '</td>';
+
+		row.innerHTML = columns;
+
+		return row;
+	}
+
+	function splitArrayByNum(arrayObj,num){
+        "use strict";
+        var result=[];
+        var i=0;
+        while(i<arrayObj.length){
+            result.push(arrayObj.slice(i,i+num));
+            i+=num;
+        }
+        return result;
     }
 
-    if (diffChart) {
-        diffChart.data.datasets[0].data = chartDataSetDiff.reverse();
-        diffChart.update();
+    function renderAltBlocks(blocksHashes) {
+        var blocksResults = splitArrayByNum(blocksHashes, 50).map(hash=>new Promise(
+            (s,f)=>$.ajax({
+            url: api + '/json_rpc',
+            method: "POST",
+            data: JSON.stringify({
+                jsonrpc: "2.0",
+                id: "alt_block_info",
+                method: "get_block_header_by_hash",
+                params: {
+                    hashes: hash
+                }
+            }),
+            dataType: 'json',
+            cache: 'false',
+            success: function (data) {
+                   s(data.result.block_headers);
+            },
+                        error:f
+            })
+          )
+        );
+
+        Promise.allSettled(blocksResults).then(
+        results=>{
+                results=results.filter(e=>e.status==="fulfilled").map(e=>e.value);
+                results=[].concat.apply([],results);
+                var $blocksRows = $('#alt_blocks_rows');
+        for (var i = 0; i < results.length; i++) {
+            var block = results[i];
+            var blockJson = JSON.stringify(block);
+            var existingRow = document.getElementById('altBlockRow_' + block.height);
+            if (existingRow && existingRow.getAttribute('data-json') !== blockJson) {
+                $(existingRow).replaceWith(getAltBlockRowElement(block, blockJson));
+            } else if (!existingRow) {
+                var blockElement = getAltBlockRowElement(block, blockJson);
+                var inserted = false;
+                var rows = $blocksRows.children().get();
+                for (var f = 0; f < rows.length; f++) {
+                    var bHeight = parseInt(rows[f].getAttribute('data-height'));
+                    if (bHeight < block.height) {
+                        inserted = true;
+                        $(rows[f]).before(blockElement);
+                        break;
+                    }
+                }
+                if (!inserted) {
+                    $blocksRows.append(blockElement);
+                }
+            }
+        }
+        $("time.timeago").timeago();
+        }).catch(console.error);
     }
-}
 
-function loadMoreChart() {
-    refreshChart();
-}
+	function calcAvgHashRate() {
+		var sum = Difficulties.reduce(add, 0);
+		function add(a, b) {
+			return a + b;
+		}
+		var avgDiff = Math.round(sum / Difficulties.length);
+		var avgHashRate = avgDiff / blockTargetInterval;
 
-$(function () {
-    $('[data-toggle="tooltip"]').tooltip();
-});
+		//updateText('avgDifficulty', getReadableDifficultyString(avgDiff, 2).toString());
+		//updateText('avgHashrate', getReadableHashRateString(avgDiff / blockTargetInterval));
+		updateText('blockSolveTime', getReadableTime(lastStats.difficulty / avgHashRate));
+	}
 
-function getReadableTime(seconds)
-{
-    var units = [[60, 's.'], [60, 'min.'], [24, 'h.'],
-    [7, 'd.'], [4, 'w.'], [12, 'м.'], [1, 'y.']];
+	function calcAvgSolveTime() {
+		ts = Timestamps.concat([]);
+		ts.sort();
+		var avg_solve_time = 0;
+		var solveTime = 0;
+		for (var i = 1; i < ts.length; i++) {
+			solveTime += ts[i] - ts[i - 1];
+		}
+		avg_solve_time = solveTime / (ts.length - 1);
+		updateText('avgSolveTime', getReadableTime(avg_solve_time));
+	}
 
-    function formatAmounts(amount, unit) {
-        var rounded = Math.round(amount);
-        return '' + rounded + ' ' + unit + (rounded > 1 ? '' : '');
-    }
+	//  MemPool Transactions
+	function getPoolTransactions() {
+		var xhrGetPool = $.ajax({
+			url: api + '/get_transaction_pool',
+			method: "GET",
+			dataType: 'json',
+			cache: 'false',
+			success: function (newdata) {
+				if (typeof newdata !== "undefined") {
+					var data = newdata.transactions;
+					var totalFee = 0;
+					var totalSize = 0;
+					var txcount = 0;
+					var txsRows = document.getElementById('mem_pool_rows');
+					if (txsRows) {
+						while (txsRows.firstChild) {
+							txsRows.removeChild(txsRows.firstChild);
+						}
+					}
 
-    var amount = seconds;
-    for (var i = 0; i < units.length; i++) {
-        if (amount < units[i][0])
-            return formatAmounts(amount, units[i][1]);
-        amount = amount / units[i][0];
-    }
-    return formatAmounts(amount, units[units.length - 1][1]);
-}
+                    if (typeof data == "undefined") {
+    					$('#mem_pool').hide();
+						$('#empty_mem_pool').show();
+					} else {
+						for (var i = 0; i < data.length; i++) {
+    					var tx = data[i];
 
-$('#loadMoreBlocks').click(function() {
-	loadMoreBlocks_Click();
-});
+						var row = document.createElement('tr');
+						var columns =
+							'<td class="date-time">' + formatDate(tx.receive_time) + '<br />(<span class="mtx-ago"></span>)' +
+							'</td>' +
+							'<td>' + getReadableCoins(tx.fee, 4, true) + '</td>' +
+							'<td>' + formatBytes(parseInt(tx.blob_size)) + '</td>' +
+							'<td>' + formatPaymentLink(tx.id_hash) + '</td>';
+						row.innerHTML = columns;
+						$(txsRows).append(row);
+						$(row).find('.mtx-ago').timeago('update', new Date(tx.receive_time * 1000)
+						.toISOString());
 
-$('#prev-page').click(function(e) {
-	prevPage_Click(e);
-});
+						txcount = txcount + 1;
+						totalFee = totalFee + tx.fee;
+						totalSize = totalSize + tx.blob_size;
 
-$('#next-page').click(function(e) {
-	nextPage_Click(e);
-});
+					    }
+					    updateText('mempool_count', txcount);
+					    updateText('mempool_fees', getReadableCoins(totalFee, 4));
+					    updateText('mempool_sizes', formatBytes(parseInt(totalSize)));
 
-$('#goto-height-go').click(function() {
-	gotoHeightGo_Click();
-});
+                        $('#mem_pool').show();
+						$('#empty_mem_pool').hide();
+					}
+				}
+			}
+		});
+	}
 
-$('#goto-height').keyup(function (e) {
-    if (e.keyCode === 13)
-		gotoHeightGo_Click();
-});
-//# sourceURL=./pages/home.html
+	// Difficulty chart
+	function displayDiffChart() {
+		var ctx = document.getElementById("difficultyChart");
+		var chartData = {
+			labels: [].concat(formatDate(DateTimes)).reverse(),
+			datasets: [
+			{
+				data: [].concat(Blocks).reverse(),
+				yAxisID: "Height",
+				label: "Height",
+				backgroundColor: "rgba(0,0,0,0)",
+				borderColor: "rgba(0,0,0,0)",
+				borderWidth: 0,
+				pointBorderWidth: 0,
+				pointRadius: 0,
+				pointHoverRadius: 0,
+				pointHitRadius: 0,
+				display: false,
+				type: 'line'
+			}, {
+				data: [].concat(Difficulties).reverse(),
+				yAxisID: "Difficulty",
+				label: "Difficulty",
+				backgroundColor: "rgba(47,164,231,0)",
+				borderColor: '#2FA4E7',
+				borderWidth: 3,
+				pointColor: "#2FA4E7",
+				pointBorderColor: "#2FA4E7",
+				pointHighlightFill: "#2FA4E7",
+				pointBackgroundColor: "#2FA4E7",
+				pointBorderWidth: 1,
+				pointRadius: 2,
+				pointHoverRadius: 3,
+				pointHitRadius: 5,
+				type: 'line'
+			}, {
+				data: [].concat(Txses).reverse(),
+				yAxisID: "Transactions",
+				label: "Transactions",
+				backgroundColor: "rgba(100,255,218,0.5)",
+				borderWidth: 0,
+				pointHitRadius: 5,
+				type: 'bar'
+			}, {
+				data: [].concat(Sizes).reverse(),
+                yAxisID: "Sizes",
+                label: "Size, bytes",
+                backgroundColor: "rgba(198,255,0,0.5)",
+                data: [].concat(Solvetimes).reverse(),
+                borderColor: '#99D9EA',
+				borderWidth: 0,
+				pointHitRadius: 5,
+                type: 'bar'
+            }, {
+				data: [].concat(Solvetimes).reverse(),
+				yAxisID: "Solvetimes",
+				label: "Solve time, s",
+				backgroundColor: "rgba(255,192,0,0.1)",
+				borderColor: '#FFC000',
+				borderWidth: 0,
+				pointHitRadius: 5,
+				type: 'bar'
+			}]
+		};
+		var options = {
+			responsive: true,
+			maintainAspectRatio: false,
+			elements: {
+				line: {
+					tension: 0
+				}
+			},
+			title: {
+				display: false,
+				text: 'Network difficulty and Blocks info',
+				fontFamily: "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen-Sans,Ubuntu,Cantarell,'Helvetica Neue',sans-serif;"
+			},
+			legend: {
+				display: false,
+				labels: {
+					position: 'top',
+					filter: function(legendItem, chartData) {
+						if (legendItem.datasetIndex === 0) {
+							return false;
+						}
+						return true;
+					}
+				}
+			},
+			onClick: graphClickEvent,
+			scales: {
+				yAxes: [
+					{
+						id: 'Height',
+						type: 'linear',
+						position: 'left',
+						scaleLabel: {
+							display: false,
+							labelString: 'Height'
+						},
+						gridLines: {
+							display: false
+						},
+						ticks: {
+							fontSize: 9,
+							display: false
+						},
+						display: false
+					}, {
+						id: 'Difficulty',
+						type: 'linear',
+						position: 'left',
+						scaleLabel: {
+							display: true,
+							labelString: 'Difficulty'
+						},
+						gridLines: {
+							display: false
+						},
+						ticks: {
+							fontSize: 8,
+							display: true,
+							callback: function(value) {
+								return getReadableDifficultyString(value, 2);
+							},
+						},
+						display: true
+					}, {
+						id: 'Transactions',
+						type: 'linear',
+						position: 'right',
+						scaleLabel: {
+							display: false,
+							labelString: 'Transactions'
+						},
+						gridLines: {
+							display: false
+						},
+						ticks: {
+							fontSize: 9,
+							display: false
+						},
+						display: false
+					}, {
+						id: 'Sizes',
+						type: 'linear',
+						position: 'right',
+						scaleLabel: {
+							display: false,
+							labelString: 'Size'
+						},
+						gridLines: {
+							display: false
+						},
+						ticks: {
+							fontSize: 9,
+							display: false,
+    						suggestedMin: 0,
+							suggestedMax: 100
+						},
+						display: false
+					}, {
+						id: 'Solvetimes',
+						type: 'linear',
+						position: 'right',
+						scaleLabel: {
+							display: true,
+							labelString: 'Solve time'
+						},
+						gridLines: {
+							display: false
+						},
+						ticks: {
+							fontSize: 8,
+							display: true
+						},
+						display: true
+					}
+				],
+				xAxes: [{
+					stacked: true,
+					type: "time",
+					categoryPercentage: 0,
+					barPercentage: 1,
+					categorySpacing: 0,
+					barThickness: 5,
+					time: {
+						parser: false,
+						unit: 'minute',
+						unitStepSize: 60,
+						round: 'second',
+						displayFormats: {
+							'millisecond': 'SSS [ms]',
+							'second': 'HH:mm:ss', // 11:20:01 AM
+							'minute': 'HH:mm', // 11:20:01 AM
+							'hour': 'HH:mm', // Sept 4, 5PM
+							'day': 'MMM Do', // Sep 4 2015
+							'week': 'll', // Week 46, or maybe "[W]WW - YYYY" ?
+							'month': 'MMM YYYY', // Sept 2015
+							'quarter': '[Q]Q - YYYY', // Q3
+							'year': 'YYYY', // 2017
+						},
+					},
+					gridLines: {
+						color: '#D2D2D2',
+						display: false
+					},
+					ticks: {
+						fontSize: 9,
+						autoSkip: true,
+						maxRotation: 0,
+						//minRotation: 90
+					}
+				}]
+			},
+			tooltips: {
+				mode: 'index',
+				intersect: true,
+				callbacks: {
+					title: function (tooltipItem, data) {
+						var height = data.datasets[3].data[tooltipItem[0].index];
+						var time = new Date(data.labels[tooltipItem[0].index]).toLocaleString();
+						return time + '';
+					}
+				}
+			},
+			hover: {
+				onHover: function(e, el) {
+					$("#difficultyChart").css("cursor", el[0] ? "pointer" : "default");
+				}
+			}
+		};
+
+		diffChart = new Chart(ctx, {
+			type: 'bar',
+			data: chartData,
+			options: options
+		});
+	}
+
+	function refreshChart() {
+		var brows = $('#blocks_rows').children(),
+			labels = [],
+			diffs = [],
+			sizes = [],
+			times = [],
+			heights = [],
+			txsnr = [],
+			lapses = [];
+		for (var i = 0; i < brows.length; i++) {
+			var row = $(brows[i]);
+			var label = row.data("json").height;
+			var diff = row.data("json").difficulty;
+			var txses = row.data("json").num_txes;
+			var size = row.data("json").block_size;
+			var time = row.attr('data-dt');
+			var lapse = row.data("json").solvetime;
+
+			labels.push(label);
+			diffs.push(diff);
+			txsnr.push(txses);
+			sizes.push(size);
+			times.push(time);
+			lapses.push(lapse);
+		}
+
+		if (diffChart != undefined) {
+			diffChart.data.labels = times.reverse();
+			diffChart.data.datasets[0].data = labels.reverse();
+			diffChart.data.datasets[1].data = diffs.reverse();
+			diffChart.data.datasets[2].data = txsnr.reverse();
+			diffChart.data.datasets[3].data = sizes.reverse();
+			diffChart.data.datasets[4].data = lapses.reverse();
+
+			diffChart.update();
+		}
+
+	}
+
+	function loadMoreChart() {
+		diffChart.data.labels = [].concat(DateTimes).reverse();
+		diffChart.data.datasets[0].data = [].concat(Blocks).reverse();
+		diffChart.data.datasets[1].data = [].concat(Difficulties).reverse();
+		diffChart.data.datasets[3].data = [].concat(Txses).reverse();
+		diffChart.data.datasets[4].data = [].concat(Sizes).reverse();
+		diffChart.data.datasets[5].data = [].concat(Solvetimes).reverse();
+
+		diffChart.update();
+	}
+
+	function graphClickEvent(event, array) {
+		var index = array[0]._index;
+		var dataValue = diffChart.data.datasets[0].data[index];
+		var block, xhrGetSearchBlockbyHeight;
+		if (xhrGetSearchBlockbyHeight) xhrGetSearchBlockbyHeight.abort();
+		xhrGetSearchBlockbyHeight = $.ajax({
+			url: api + '/json_rpc',
+			method: "POST",
+			data: JSON.stringify({
+				jsonrpc: "2.0",
+				id: "blockbyheight",
+				method: "get_block_header_by_height",
+				params: {
+					height: dataValue
+				}
+			}),
+			dataType: 'json',
+			cache: 'false',
+			success: function (data) {
+				if (data.result) {
+					block = data.result.block_header;
+					window.location.href = getBlockchainUrl(block.hash);
+				} else if (data.error) {
+					wrongSearchAlert();
+				}
+			}
+		});
+	}
+
+	$(function () {
+		$('[data-toggle="tooltip"]').tooltip();
+	});
+
+	function getReadableTime(seconds) {
+
+		var units = [
+			[60, 's.'],
+			[60, 'min.'],
+			[24, 'h.'],
+			[7, 'd.'],
+			[4, 'w.'],
+			[12, 'м.'],
+			[1, 'y.']
+		];
+
+		function formatAmounts(amount, unit) {
+			var rounded = Math.round(amount);
+			return '' + rounded + ' ' + unit + (rounded > 1 ? '' : '');
+		}
+
+		var amount = seconds;
+		for (var i = 0; i < units.length; i++) {
+			if (amount < units[i][0])
+				return formatAmounts(amount, units[i][1]);
+			amount = amount / units[i][0];
+		}
+		return formatAmounts(amount, units[units.length - 1][1]);
+	}
 </script>
+
+<script src="js/Chart.bundle.min.js"></script>

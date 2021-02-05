@@ -1,0 +1,71 @@
+<div style="height: 10px; clear: both;"></div>
+<div class="row">
+    <div class="col s12">
+        <div class="card hoverable">
+    		<div class="card-action grey lighten-5">
+				<h2 class="light-blue-text text-darken-4"><i class="fas fa-wallet"></i> Paper Wallet</h2>
+			</div>
+			<div class="card-content">
+				<div class="row">
+					<div class="col s12 l12">
+						<div id="paperwallet_result"></div>
+					</div>
+				</div>
+			</div>
+			<div id="validation_result" class="card-action">
+				<div class="row">
+					<div class="col s12 l12">
+						<button class="waves-effect waves-light btn light-blue darken-4" type="button" id="generate_paper_wallet">
+							<span class="fas fa-cogs"></span> Generate
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="./js/paperwallet/languages.js"></script>
+<script src="./js/paperwallet/paperwallet.js"></script>
+<script src="./js/nacl-fast-cn.js"></script>
+<script src="./js/cn_helper.js"></script>
+
+<script>
+	currentPage = {
+		destroy: function(){
+		},
+		init: function(){
+			generateWallet();
+		},
+		update: function(){
+		}
+	};
+
+	$("#generate_paper_wallet").click(function()
+	{
+		generateWallet();
+	});
+
+	function generateWallet() {
+		$("#paperwallet_result").empty();
+
+		var seed = cnUtil.sc_reduce32(cnUtil.rand_32());
+		var keys = cnUtil.create_address(seed);
+		var mnemonic = mn_encode(seed, "english");
+
+		$("#paperwallet_result").append(
+			'<ul class="collection">' +
+				'<li class=" collection-item"><i class="fas fa-envelope"></i> Address' +
+				'<p class="indigo-text text-darken-4"><strong style="font-family: Inconsolata, monospace; word-wrap: break-word;">' + keys.public_addr + '</strong></p></li>' +
+				'<li class=" collection-item"><i class="fas fa-pen-alt"></i> Mnemonic Seed' +
+				'<p class="red-text text-accent-4" style="font-family: Inconsolata, monospace;">' + mnemonic + '</li>' +
+				'<li class=" collection-item"><i class="fas fa-key"></i> View Keys' +
+				'<p class="teal-text text-accent-4"><strong>Public:</strong> <span style="font-family: Inconsolata, monospace; word-wrap: break-word;">' + keys.view.pub + '</span></p>' +
+				'<p class="red-text text-accent-4"><strong>Secret:</strong> <span style="font-family: Inconsolata, monospace; word-wrap: break-word;">' + keys.view.sec + '</span></p></li>' +
+				'<li class=" collection-item"><i class="fas fa-key"></i> Spend Keys' +
+				'<p class="teal-text text-accent-4"><strong>Public:</strong> <span style="font-family: Inconsolata, monospace; word-wrap: break-word;">' + keys.spend.pub + '</span></p>' +
+				'<p class="red-text text-accent-4"><strong>Secret:</strong> <span style="font-family: Inconsolata, monospace; word-wrap: break-word;">' + keys.spend.sec + '</span></p></li>' +
+			'</ul>'
+		);
+	}
+</script>

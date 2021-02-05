@@ -1,260 +1,429 @@
-<h2><i class="fa fa-exchange fa-fw" aria-hidden="true"></i> Transaction</h2>
-<div class="row" id="tx_info">
-    <div class="col-md-12 stats">
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="Unique fingerprint of the transaction."><i class="fa fa-question-circle"></i></span> Hash: <span id="transaction.hash" style="word-break: break-all;"></span></div>
-        <div id="confirmations" style="display: none;"><span data-toggle="tooltip" data-placement="right" data-original-title="The number of network confirmations."><i class="fa fa-question-circle"></i></span> Confirmations: <span id="transaction.confirmations"></span>, First confirmation time: <span id="transaction.timestamp"></span> (<time class="transaction-timeago"></time>)</div>
-        <div id="tx_unconfirmed" style="display: none;"><span data-toggle="tooltip" data-placement="right" data-original-title="The transaction is not included into block yet and therefore is not wtitten into blockchain."><i class="fa fa-question-circle"></i></span> <span class="text-warning">Unconfirmed transaction</span></div>
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="Money that goes to the miner, who included this transaction into block."><i class="fa fa-question-circle"></i></span> Fee: <span id="transaction.fee"></span></div>
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="It does not mean that this is the amount that is actually transferred."><i class="fa fa-question-circle"></i></span> Sum of outputs: <span id="transaction.amount_out"></span></div>
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="TX type."><i class="fa fa-question-circle"></i></span> Type: <span id="transaction.type"></span></div>
-        <div id="div_transaction_paymentId"><span data-toggle="tooltip" data-placement="right" data-original-title="TX extra data."><i class="fa fa-question-circle"></i></span> Extra: <span id="transaction.extra"></span></div>
-        <div id="div_transaction_pubkey"><span data-toggle="tooltip" data-placement="right" data-original-title="TX public key."><i class="fa fa-question-circle"></i></span> Pub Key: <span id="transaction.pubkey"></span></div>
-        <div id="div_transaction_mixin"><span data-toggle="tooltip" data-placement="right" data-original-title="Denotes how many random inputs are mixed within this transactions in order to achieve desired level of anonimity."><i class="fa fa-question-circle"></i></span> Mixin count: <span id="transaction.mixin"></span></div>
-    </div>
+<style>
+    #tx_block h3 {
+        margin-top: 0px;
+    }
+
+    table td:first-child,
+    table th {
+        white-space: nowrap;
+    }
+
+    table td:nth-child(2) {
+        word-break: break-all;
+    }
+
+    .table>tbody>tr>td:nth-child(2) {
+        font-size: 95%;
+    }
+
+    .nav-item .nav-link h3 {
+        margin: 0 20px;
+    }
+
+</style>
+
+<div style="height: 10px; clear: both;"></div>
+<h3 id="tx_loading" class="center-align"><i class="fas fa-circle-notch fa-spin"></i></h3>
+<div class="row">
+    <div class="col s12">
+        <h2 class="light-blue-text text-darken-4">
+        	<i class="fas fa-exchange-alt"></i> Transaction
+			<small class="tooltipped" data-position="top" data-tooltip="Unique fingerprint of the transaction." id="transaction.hash" style="word-break: break-all; word-wrap: break-word;"></small>
+		</h2>
+	</div>
 </div>
-<div id="tx_block">
-    <h3><i class="fa fa-cube fa-fw" aria-hidden="true"></i> In block</h3>
-    <div class="row">
-		<div class="col-md-12 stats">
-			<div><i class="fa fa-circle-o"></i> Hash: <span id="block.hash" style="word-break: break-all;"></span></div>
-			<div><i class="fa fa-circle-o"></i> Height: <span id="block.height"></span></div>
-			<div><i class="fa fa-circle-o"></i> Timestamp: <span id="block.timestamp"></span></div>
+<div id="tx_details" style="display: none;">
+	<div class="row" id="tx_info">
+		<div class="col s12 l4">
+			<ul class="collection">
+				<li class=" collection-item" id="tx_unconfirmed" style="display: none;">
+					<i class="fa fa-exclamation-triangle fa-fw red-text tooltipped" data-position="top" data-tooltip="The transaction is not included into block yet and therefore is not wtitten into blockchain."></i>
+					<span class="red-text">Unconfirmed transaction</span>
+				</li>
+				<li class="tx_block collection-item">
+					<i class="fas fa-bars fa-fw"></i> Block height: <span id="block.height"></span>
+				</li>
+				<li class="collection-item">
+					<i class="fas fa-unlock-alt fa-fw tooltipped" data-position="top"
+					data-tooltip="Unlock time allows you to send a transaction to someone, such that they can not spend it until after a certain number of blocks, or until a certain time."></i>
+					Unlock time: <span id="transaction.unlock_time"></span>
+				</li>
+				<li class="collection-item" id="transaction_fee">
+					<i class="fas fa-donate fa-fw tooltipped" data-position="top" data-tooltip="Money that goes to the miner, who included this transaction into block."></i>
+					Fee: <span id="transaction.fee"></span>
+				</li>
+				<li class="collection-item" id="transaction_mixin">
+					<i class="fas fa-mortar-pestle fa-fw tooltipped" data-position="top" data-tooltip="Denotes how many random inputs are mixed within this transactions in order to achieve desired level of anonimity. Mixin count 1 means no additional inputs are mixed in and thus each input can be traced back."></i>
+					Mixin count: <span id="transaction.mixin"></span>
+				</li>
+				<li class="collection-item" id="transaction_version">
+					<i class="fas fa-flag fa-fw tooltipped" data-position="top" data-tooltip="Version of the transaction."></i>
+					Version: <span id="transaction.version"></span>
+				</li>
+			</ul>
+		</div>
+		<div class="col s12 l8">
+			<ul class="collection">
+				<li class="tx_block collection-item">
+					<i class="fas fa-hashtag fa-fw"></i> Block hash: <span id="block.hash" style="word-break: break-all;"></span>
+				</li>
+				<li class="collection-item" id="confirmations" style="display: none;">
+					<i class="fas fa-check-double fa-fw tooltipped" data-position="top" data-tooltip="The number of network confirmations."></i>
+					Confirmations: <span
+					id="transaction.confirmations"></span> &bull; First confirmation time: <span
+					id="transaction.timestamp"></span> (<time class="transaction-timeago"></time>)
+				</li>
+				<li id="transaction_extra_nonce" style="display: none;" class="collection-item">
+					<i class="fas fa-puzzle-piece fa-fw tooltipped" data-position="top" data-tooltip="Extra nonce."></i>
+					Extra nonce: <span id="transaction.extra_nonce"></span>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col s12">
+			<div class="card hoverable">
+				<div class="card-tabs">
+					<ul class="tabs tabs-fixed-width" id="tab_menu">
+						<li class="tab col s3"><a href="#tab_inputs" class="light-blue-text text-darken-4 waves-effect waves-block waves-light">Inputs <span class="badge" id="inputs_count"></span></a></li>
+						<li class="tab col s3"><a href="#tab_outputs" class="active light-blue-text text-darken-4 waves-effect waves-block waves-light">Outputs <span class="badge" id="outputs_count"></span></a></li>
+						<li class="tab col s3"><a href="#tab_signatures" class="light-blue-text text-darken-4 waves-effect waves-block waves-light">Signatures <span class="badge" id="signatures_count"></span></a></li>
+					</ul>
+				</div>
+				<div class="card-content grey lighten-4">
+					<div class="col s12" id="tab_inputs">
+						<div class="table-responsive">
+							<table class="highlight">
+								<thead>
+									<tr>
+										<th><i class="fas fa-money-bill-wave-alt"></i>&nbsp;Amount</th>
+										<th><i class="fas fa-fingerprint"></i>&nbsp;Image</th>
+										<th><i class="fas fa-arrows-alt"></i>&nbsp;Output&nbsp;Indexes</th>
+									</tr>
+								</thead>
+								<tbody id="inputs_rows">
+
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="col s12" id="tab_outputs">
+						<div class="table-responsive">
+							<table class="highlight">
+								<thead>
+									<tr>
+										<th><i class="fas fa-money-bill-wave-alt"></i>&nbsp;Amount</th>
+										<th><i class="fas fa-key"></i>&nbsp;Key</th>
+									</tr>
+								</thead>
+								<tbody id="outputs_rows">
+
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="col s12" id="tab_signatures">
+						<div class="table-responsive">
+							<table class="highlight">
+								<thead>
+									<tr>
+                                        <th><i class="fas fa-key"></i>&nbsp;Signature</th>
+									</tr>
+								</thead>
+								<tbody id="signature_rows">
+
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div style="clear: both;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="card-panel" id="tx_not_found" style="display: none;">
+    	<div class="row">
+			<div class="col-md-12">
+				<h6 class="text-danger">
+					<i class="fa fa-exclamation-triangle fa-lg text-danger"></i>
+					Transaction not found
+				</h6>
+			</div>
 		</div>
 	</div>
 </div>
 
-<h3 class="inputs">Inputs (<span id="inputs_count"></span>)</h3>
-<div class="table-responsive">
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th><i class="fa fa-money"></i> Amount</th>
-            <th><i class="fa fa-paw"></i> Image</th>
-			<th><i class="fa fa-arrows-alt"></i> Offset</th>
-        </tr>
-        </thead>
-        <tbody id="inputs_rows">
-
-        </tbody>
-    </table>
-</div>
-
-
-<h3 class="outputs">Outputs (<span id="outputs_count"></span>)</h3>
-<div class="table-responsive">
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th><i class="fa fa-money"></i> Amount</th>
-            <th><i class="fa fa-key"></i> Key</th>
-        </tr>
-        </thead>
-        <tbody id="outputs_rows">
-
-        </tbody>
-    </table>
-</div>
 <script>
-    var xhrGetTransaction, transaction;
+	var xhrGetTransaction, transaction, ago;
+	var refresh = false;
+	var loaded = false;
+	var transactionHash = urlParam('hash');
 
-    currentPage = {
-        destroy: function(){
-            if (xhrGetTransaction) xhrGetTransaction.abort();
-        },
-        init: function(){
-            getTransaction();
-        },
-        update: function(){
-        }
-    };
-
-    function getTransaction(){
-        if (xhrGetTransaction) xhrGetTransaction.abort();
-		var searchTx = $.parseJSON(sessionStorage.getItem('searchTransaction'));
-		if (searchTx) {
-            getTransactionData(searchTx[0], searchTx[0].tx_hash);
-		} else {
-			xhrGetTransaction = $.ajax({
-				url: './api/gettransactions.php?hash[]=' + urlParam('hash'),
-				dataType: 'json',
-				cache: 'false',
-				success: function(data){
-                    var tx = data.result[0];
-                    getTransactionData(tx);
-				}
-            });
+	currentPage = {
+		destroy: function () {
+			if (xhrGetTransaction) xhrGetTransaction.abort();
+		},
+		init: function () {
+			$('.tooltipped').tooltip();
+			M.updateTextFields();
+		},
+		update: function () {
+			if (!refresh) {
+				getTransaction(handleData);
+			} else {
+				$(".transaction-timeago").timeago('update', ago);
+				updateText('transaction.confirmations', lastStats.height - transaction.block_height);
+			}
 		}
-		sessionStorage.removeItem('searchTransaction');
-    }
+	};
 
-    function getTransactionData(tx)
-    {
-        var txExtra = "";
-        for (var i = 0; i < tx.json.extra.length; i++)
-            txExtra += tx.json.extra[i].toString(16).padStart(2, '0');
+	function getTransaction(successCallback) {
+		if (xhrGetTransaction) xhrGetTransaction.abort();
+		xhrGetTransaction = $.ajax({
+			url: api + '/get_transactions',
+			method: "POST",
+			data: JSON.stringify({
+				txs_hashes : [transactionHash],
+    			decode_as_json: true,
+			}),
+			dataType: 'json',
+			cache: false,
+			async: false,
+			success: successCallback
+		});
+	}
+
+	function handleData(data) {
+		if (data.status == "OK" && typeof data.missed_tx == 'undefined') {
+            transactionResults = processTxData(data).result;
+			transaction = transactionResults[0];
+			renderTransaction(transaction);
+			$('#tx_not_found').hide();
+			$('#tx_loading').hide();
+			$('#tx_details').show();
+		} else {
+            $('#tx_loading').hide();
+			$('#tx_details').hide();
+            $('#tx_not_found').show();
+		}
+	}
+
+	function renderTransaction(transaction) {
+        transactionJson = transaction.json;
+
+		updateText('transaction.hash', transaction.tx_hash);
+		if (!transaction.in_pool) {
+			$('#confirmations').show();
+			updateText('transaction.confirmations', lastStats.height - transaction.block_height);
+			updateText('transaction.timestamp', formatDate(transaction.block_timestamp));
+			ago = new Date(transaction.block_timestamp * 1000).toISOString();
+			$(".transaction-timeago").timeago('update', ago);
+		}
+
+        if (typeof transactionJson.rct_signatures !== 'undefined') {
+			updateText('transaction.fee', getReadableCoins(transactionJson.rct_signatures.txnFee));
+		} else {
+			$('#transaction_fee').hide();
+		}
+
+		if (transactionJson.rct_signatures.type > 0) {
+            updateText('transaction.mixin', transactionJson.rct_signatures.type - 1);
+		} else {
+            $('#transaction_mixin').hide();
+		}
+
+		if (typeof transactionJson.version !== 'undefined') {
+			updateText('transaction.version', transactionJson.version);
+		} else {
+			$('#transaction_version').hide();
+		}
+		updateText('transaction.unlock_time', transactionJson.unlock_time);
+
+		if (typeof transactionJson.extra !== 'undefined' && transactionJson.extra.length > 0) {
+			$("#transaction_extra_nonce").show();
+			updateText('transaction.extra_nonce', toHexString(transactionJson.extra));
+		} else {
+			$("#transaction_extra_nonce").hide();
+		}
+
+		if (transaction.in_pool) {
+			$('.tx_block').hide();
+			$('#tx_unconfirmed').show();
+		} else {
+			$('.tx_block').show();
+			$('#tx_unconfirmed').hide();
+			refresh = true;
+		}
 
         $.ajax({
-            url: './api/gettxpubkey.php?extra=' + txExtra,
-            dataType: 'json',
-            cache: 'false',
-            success: function(data3){
-                renderTransaction(txExtra, data3.result.pubkey, tx);
-                $.ajax({
-                    url: './api/getblockheaderbyheight.php?height=' + tx.block_height,
-                    dataType: 'json',
-                    cache: 'false',
-                    success: function(data2) {
-                        renderTransactionBlockData(data2.result.block_header);
-                    }
-                });
+    		url: api + '/json_rpc',
+			method: "POST",
+			data: JSON.stringify({
+				jsonrpc: "2.0",
+				id: "explorer_block_page",
+				method: "get_block_header_by_height",
+				params: {
+					height: transaction.block_height
+				}
+			}),
+			dataType: 'json',
+			cache: 'false',
+			success: function (data) {
+				if (data.result) {
+					updateTextLinkable('block.hash', formatBlockLink(data.result.block_header.hash));
+				}
+			}
+		});
+
+		updateText('block.height', transaction.block_height);
+
+		if (!loaded) {
+			if (typeof transactionJson.vin.key !== 'undefined') {
+                renderInputs(transactionJson.vin);
+			} else {
+                updateText('inputs_count', 0);
+			}
+
+			renderOutputs(transactionJson.vout);
+
+            if (transactionJson.rct_signatures.type !== 0){
+			    renderSignatures(transactionJson.rct_signatures.outPk);
+            } else {
+                updateText('signatures_count', 0);
             }
-        });
-    }
 
-    function renderTransaction(txExtra, txPubKey, transaction)
-    {
-        if (transaction.in_pool)
-        {
-            $('#tx_block').hide();
-			$('#tx_unconfirmed').show();
-            $('#confirmations').hide();
-        }
-        else
-        {
-            $('#tx_block').show();
-			$('#tx_unconfirmed').hide();
-            $('#confirmations').show();
-        }
 
-        if (transaction.json.rct_signatures.txnFee)
-            updateText('transaction.fee', getReadableCoins(transaction.json.rct_signatures.txnFee));
-        else
-            updateText('transaction.fee', getReadableCoins(0, 2));
-
-        var outputTotal = 0;
-        for (var i = 0; i < transaction.json.vout.length; i++)
-            outputTotal += transaction.json.vout[i].amount;
-
-        updateText('transaction.amount_out', getReadableCoins(outputTotal, 4));
-        updateText('transaction.type', getTransactionType(transaction.json.rct_signatures.type));
-        updateText('transaction.extra', txExtra);
-        updateText('transaction.pubkey', txPubKey);
-        if (!transaction.json.vin[0].key)
-            updateText('transaction.mixin', '0');
-        else
-            updateText('transaction.mixin', transaction.json.vin[0].key.key_offsets.length - 1);
-
-        updateText('transaction.hash', transaction.tx_hash);
-
-        renderInputs(transaction.json.vin);
-        renderOutputs(transaction.json.vout);
+			setTimeout(function () {
+				var instance = M.Tabs.init(document.getElementById('tab_menu'));
+				instance.select('tab_outputs');
+			}, 100)
+		}
+		loaded = true;
 	}
 
-    function renderTransactionBlockData(block)
-    {
-        updateText('transaction.confirmations', lastStats.height - block.height);
-		updateText('transaction.timestamp', formatDate(block.timestamp));
-		$(".transaction-timeago").timeago('update', new Date(block.timestamp * 1000).toISOString());
-        updateTextLinkable('block.hash', formatBlockLink(block.hash));
-        updateText('block.height', block.height);
-        updateText('block.timestamp', formatDate(block.timestamp));
+	function renderInputIndexes(offsets) {
+		var html = "";
+		for (var i = 0; i < offsets.length; i++) {
+			var offset = offsets[i];
+			var bull = "";
+			if (i < offsets.length - 1) {
+				bull = ' &bull; ';
+			}
+			html += offset + bull;
+		}
+		return html;
 	}
 
-    function getInputCells(input){
-        return '<td>' + getReadableCoins(input.key.amount) + '</td>' +
-            '<td>' + input.key.k_image + '</td>' +
-            '<td>' + input.key.key_offsets + '</td>';
-    }
+	function getInputCells(input) {
+		return '<td>' + getReadableCoins(input.key.amount) + '</td>' +
+    		   '<td>' + input.key.k_image + '</td>' +
+			   '<td>' + renderInputIndexes(input.key.key_offsets) + '</td>';
+	}
 
-
-    function getInputRowElement(input, jsonString){
-
-        var row = document.createElement('tr');
-        row.setAttribute('data-json', jsonString);
-        row.setAttribute('data-k_image', input.key.k_image);
+	function getInputRowElement(input, jsonString) {
+		var row = document.createElement('tr');
+		row.setAttribute('data-json', jsonString);
+		row.setAttribute('data-k_image', input.key.k_image);
 		row.setAttribute('data-key_offsets', input.key.key_offsets);
-        row.setAttribute('id', 'inputRow' + input.key.k_image);
+		row.setAttribute('id', 'inputRow' + input.key.k_image);
+		row.innerHTML = getInputCells(input);
+		return row;
+	}
 
-        row.innerHTML = getInputCells(input);
+	function renderInputs(inputResults) {
+		var $inputsRows = $('#inputs_rows');
+		if (inputResults.length == 1) {
+			var input = inputResults[0];
+			var inputJson = JSON.stringify(input);
+			var existingRow = document.getElementById('inputRow_' + input.key.k_image);
+			if (existingRow && existingRow.getAttribute('data-json') !== inputJson) {
+				$(existingRow).replaceWith(getInputRowElement(input, inputJson));
+			} else if (!existingRow) {
 
-        return row;
-    }
+				var inputElement = getInputRowElement(input, inputJson);
+				$inputsRows.append(inputElement);
+			}
+		} else {
+			for (var i = 0; i < inputResults.length; i++) {
+				var input = inputResults[i];
+				var inputJson = JSON.stringify(input);
+				var existingRow = document.getElementById('inputRow' + input.key.k_image);
+				if (existingRow && existingRow.getAttribute('data-json') !== inputJson) {
+					$(existingRow).replaceWith(getInputRowElement(input, inputJson));
+				} else if (!existingRow) {
+					var inputElement = getInputRowElement(input, inputJson);
+					$inputsRows.append(inputElement);
+				}
+			}
+		}
+		updateText('inputs_count', inputResults.length);
+	}
 
-    function renderInputs(inputResults){
+	function getOutputCells(output) {
+		return '<td>' + getReadableCoins(output.amount) + '</td>' +
+			   '<td>' + output.target.key + '</td>';
+	}
 
-        var $inputsRows = $('#inputs_rows');
+	function getOutputRowElement(output, jsonString) {
+		var row = document.createElement('tr');
+		row.setAttribute('data-json', jsonString);
+		row.setAttribute('data-k_image', output.target.key);
+		row.setAttribute('id', 'outputRow' + output.target.key);
+		row.innerHTML = getOutputCells(output);
+		return row;
+	}
 
-        for (var i = 0; i < inputResults.length; i++){
+	function renderOutputs(outputResults) {
+		var $outputsRows = $('#outputs_rows');
+		for (var i = 0; i < outputResults.length; i++) {
+			var output = outputResults[i];
+			var outputJson = JSON.stringify(output);
+			var existingRow = document.getElementById('outputRow' + output.target.key);
+			if (existingRow && existingRow.getAttribute('data-json') !== outputJson) {
+				$(existingRow).replaceWith(getOutputRowElement(output, outputJson));
+			} else if (!existingRow) {
+				var outputElement = getOutputRowElement(output, outputJson);
+				$outputsRows.append(outputElement);
+			}
+		}
 
-            var input = inputResults[i];
+		updateText('outputs_count', outputResults.length);
 
-            if (!input.key)
-                continue;
+		if (urlParam('highlight')) {
+			var $highlight = $('#outputs_rows tr').eq(urlParam('highlight'));
+			$highlight.addClass("red lighten-5");
+			$highlight.children().eq(2).addClass("red-text text-darken-4");
+			$highlight.get(0).scrollIntoView(true);
+		}
+	}
 
-            var inputJson = JSON.stringify(input);
+	function getSigCells(sig) {
+		return '<td>' + sig + '</td>';
+	}
 
-            var existingRow = document.getElementById('inputRow' + input.key.k_image);
+	function getSigRowElement(sig, jsonString) {
+		var row = document.createElement('tr');
+		row.setAttribute('data-json', jsonString);
+		row.setAttribute('id', 'sigRow' + sig.substring(0, 10));
+		row.innerHTML = getSigCells(sig);
+		return row;
+	}
 
-            if (existingRow && existingRow.getAttribute('data-json') !== inputJson){
-                $(existingRow).replaceWith(getInputRowElement(input, inputJson));
-            }
-            else if (!existingRow){
+	function renderSignatures(signatures) {
+		var $signatureRows = $('#signature_rows');
+		for (var i = 0; i < signatures.length; i++) {
+			var sig = signatures[i];
+			var sigJson = JSON.stringify(sig);
+			var existingRow = document.getElementById('sigRow' + sig.substring(0, 10));
+			if (existingRow && existingRow.getAttribute('data-json') !== sigJson) {
+				$(existingRow).replaceWith(getSigRowElement(sig, sigJson));
+			} else if (!existingRow) {
+				var sigElement = getSigRowElement(sig, sigJson);
+				$signatureRows.append(sigElement);
+			}
+		}
+        updateText('signatures_count', signatures.length);
+	}
 
-                var inputElement = getInputRowElement(input, inputJson);
-                $inputsRows.append(inputElement);
-            }
-
-        }
-
-		updateText('inputs_count', document.querySelectorAll('#inputs_rows tr').length);
-    }
-
-
-    function getOutputCells(output){
-        return '<td>' + getReadableCoins(output.amount) + '</td>' +
-            '<td>' + output.target.key + '</td>';
-    }
-
-
-    function getOutputRowElement(output, jsonString){
-
-        var row = document.createElement('tr');
-        row.setAttribute('data-json', jsonString);
-        row.setAttribute('data-k_image', output.target.key);
-        row.setAttribute('id', 'outputRow' + output.target.key);
-
-        row.innerHTML = getOutputCells(output);
-
-        return row;
-    }
-
-    function renderOutputs(outputResults){
-
-        var $outputsRows = $('#outputs_rows');
-
-        for (var i = 0; i < outputResults.length; i++){
-
-            var output = outputResults[i];
-
-            var outputJson = JSON.stringify(output);
-
-            var existingRow = document.getElementById('outputRow' + output.target.key);
-
-            if (existingRow && existingRow.getAttribute('data-json') !== outputJson){
-                $(existingRow).replaceWith(getOutputRowElement(output, outputJson));
-            }
-            else if (!existingRow){
-
-                var outputElement = getOutputRowElement(output, outputJson);
-                $outputsRows.append(outputElement);
-            }
-        }
-
-		updateText('outputs_count', document.querySelectorAll('#outputs_rows tr').length);
-    }
-
-	$(function() {
-		$('[data-toggle="tooltip"]').tooltip();
-    });
-//# sourceURL=./pages/blockchain_transaction.html
 </script>
