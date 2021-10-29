@@ -1,12 +1,12 @@
-var api = 'https://xes.sohamb03.me/node_web';
+var api = 'https://xes.xolentum.org/node_web';
 var apiList = [
-        "http://xolentum.sohamb03.me:13580",
+        "http://node.xolentum.org:13580",
         "http://xolentum.xyz:13580"
     ];
 
-var nodesAPI = 'https://xes.sohamb03.me/nodes';
-var poolsAPI = 'https://xes.sohamb03.me/pools';
-var blocksAPI = 'https://xes.sohamb03.me/blocks';
+var nodesAPI = 'https://xes.xolentum.org/nodes';
+var poolsAPI = 'https://xes.xolentum.org/pools';
+var blocksAPI = 'https://xes.xolentum.org/blocks';
 
 var blockTargetInterval = 60;
 var coinUnits = 1000000000000;
