@@ -18,4 +18,4 @@ Edit `config.js` and `config.php` to match your parameters.
 
 [GPL-3.0 License](https://github.com/xolentum/block-explorer/blob/master/LICENSE)
 
-Copyright (c) 2020-2021, The Xolentum Project
+Copyright (c) 2020-2022, The Xolentum Project
